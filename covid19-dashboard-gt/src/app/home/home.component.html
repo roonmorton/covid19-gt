@@ -1,0 +1,279 @@
+
+
+<div class="section">
+    <div class="frow-container">
+        <div style="text-align: center; align-items: center; ">
+            <h1 class="title text-blue" style="margin-bottom: 1px; font-size:xx-large;">Resumen de casos</h1>
+            <div style="width: 50%; display: block; margin: 0 auto;">
+                <hr style="margin-top: 5px;">
+            </div>
+        </div>
+    
+        <div style="text-align: right; padding-bottom: 5px;">
+            <h4 style="margin-bottom: 1px;"><strong>{{date}} </strong></h4>
+        </div>
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-2 col-md-1-4">
+                <div class="my-card">
+                    <mat-card>
+                        <mat-card-header class="bg-green-dark">
+                            <mat-card-title class="text-white">Recuperados</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: .4em!important;">
+                            <div *ngIf="dataLoadingStatus.reportedCases == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <div class="frow row-center" *ngIf="dataLoadingStatus.reportedCases == 1">
+                                <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                    <div style="display: block;">
+                                        <!-- <google-chart style="width: 200px; height: 150px;" [type]="piChart.type"
+                                                [data]="piChart.data" [options]="piChart.options">
+                                            </google-chart> -->
+                                        <google-chart style="width: 100px; height: 100px;"
+                                            [type]="reportedCasesChart.recovered.type"
+                                            [data]="reportedCasesChart.recovered.data"
+                                            [options]="reportedCasesChart.recovered.options">
+                                        </google-chart>
+                                    </div>
+                                </div>
+                                <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                    <div>
+                                        <h1 class="my-number bg-green-dark text-white">
+                                            {{reportedCasesChart.reportedCases.recovered}}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.reportedCases == 2">
+                                <p>No data...</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            <div class="col-xs-1-1 col-sm-1-2 col-md-1-4">
+                <div class="my-card">
+                    <mat-card>
+                        <mat-card-header class="bg-red-light">
+                            <mat-card-title class="text-white">Activos</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: .4em!important;">
+                            <div *ngIf="dataLoadingStatus.reportedCases == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <div class="frow row-center" *ngIf="dataLoadingStatus.reportedCases == 1">
+                                <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                    <div style="display: block;">
+                                        <google-chart style="width: 100px; height: 100px;"
+                                            [type]="reportedCasesChart.activeCases.type"
+                                            [data]="reportedCasesChart.activeCases.data"
+                                            [options]="reportedCasesChart.activeCases.options">
+                                        </google-chart>
+                                        <!-- <google-chart style="width: 200px; height: 150px;" [type]="reportedCasesChart.recovered.chart.type"
+                                                [data]="reportedCasesChart.recovered.chart.data" [options]="reportedCasesChart.recovered.chart.options">
+                                            </google-chart> -->
+                                    </div>
+                                </div>
+                                <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                    <div>
+                                        <h1 class="my-number bg-red-light text-white">
+                                            {{reportedCasesChart.reportedCases.activeCases}}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.reportedCases == 2">
+                                <p>No data...</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            <div class="col-xs-1-1 col-sm-1-2 col-md-1-4">
+                <div class="my-card">
+                    <mat-card>
+                        <mat-card-header class="bg-grey">
+                            <mat-card-title class="text-white">Fallecidos</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: .4em!important;">
+                            <div *ngIf="dataLoadingStatus.reportedCases == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <div class="frow row-center" *ngIf="dataLoadingStatus.reportedCases == 1">
+                                <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                    <div style="display: block;">
+                                        <google-chart style="width: 100px; height: 100px;"
+                                            [type]="reportedCasesChart.deceased.type"
+                                            [data]="reportedCasesChart.deceased.data"
+                                            [options]="reportedCasesChart.deceased.options">
+                                        </google-chart>
+                                        <!-- <google-chart style="width: 200px; height: 150px;" [type]="reportedCasesChart.recovered.chart.type"
+                                                [data]="reportedCasesChart.recovered.chart.data" [options]="reportedCasesChart.recovered.chart.options">
+                                            </google-chart> -->
+                                    </div>
+                                </div>
+                                <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                    <div>
+                                        <h1 class="my-number bg-grey text-white">
+                                            {{reportedCasesChart.reportedCases.deceased}}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.reportedCases == 2">
+                                <p>No data...</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            <div class="col-xs-1-1 col-sm-1-2 col-md-1-4">
+                <div class="my-card">
+                    <mat-card>
+                        <mat-card-header class="bg-red-dark">
+                            <mat-card-title class="text-white">Total</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: .4em!important;">
+                            <div *ngIf="dataLoadingStatus.reportedCases == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <div class="frow row-center" *ngIf="dataLoadingStatus.reportedCases == 1">
+                                <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                    <div style="display: block;">
+                                        <google-chart style="width: 100px; height: 100px;"
+                                            [type]="reportedCasesChart.totalcases.type"
+                                            [data]="reportedCasesChart.totalcases.data"
+                                            [options]="reportedCasesChart.totalcases.options">
+                                        </google-chart>
+                                        <!-- <google-chart style="width: 200px; height: 150px;" [type]="reportedCasesChart.recovered.chart.type"
+                                                [data]="reportedCasesChart.recovered.chart.data" [options]="reportedCasesChart.recovered.chart.options">
+                                            </google-chart> -->
+                                    </div>
+                                </div>
+                                <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                    <div>
+                                        <h1 class="my-number bg-red-dark text-white">
+                                            {{reportedCasesChart.reportedCases.totalcases}}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.reportedCases == 2">
+                                <p>No data...</p>
+                            </div> 
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="section">
+    <div class="frow-container">
+        <div style="text-align: center; align-items: center;">
+            <h1 class="title text-blue" style="margin-bottom: 1px;  font-size:xx-large;">Graficas</h1>
+            <div style="width: 50%; display: block; margin: 0 auto;">
+                <hr style="margin-top: 5px;">
+            </div>
+        </div>
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1" style="padding-top: 2rem;">
+                <div class="my-card">
+                    <mat-card>
+                        <mat-card-header class="bg-blue">
+                            <mat-card-title class="text-white">Confirmados segun departamento</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: 1.5em!important;">
+                            <div *ngIf="dataLoadingStatus.geoChart == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.geoChart == 1 && geoChart" class=" content"
+                                style="text-align: center;">
+                                <google-chart style="margin: 0 auto;" #chartGeo [title]="geoChart.title"
+                                    [type]="geoChart.type" [data]="geoChart.data" [columnNames]="geoChart.columnNames"
+                                    [options]="geoChart.options">
+                                </google-chart>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.geoChart == 2">
+                                <p>No data...</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-2 col-lg-1-2" style="padding-top: 2rem;">
+                <div class="my-card">
+                    <mat-card>
+                        <mat-card-header class="bg-light">
+                            <mat-card-title class="">Confirmados (Acumulados)</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: 1.5em!important;">
+                            <div *ngIf="this.dataLoadingStatus.accumulatedCases == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <div class="content" style="text-align: center;"
+                                *ngIf="this.dataLoadingStatus.accumulatedCases == 1 && accumulatedCases ">
+                                <google-chart style="width: 100%; height: 300px;" [type]="accumulatedCases.type" [data]="accumulatedCases.data"
+                                    [columnNames]="accumulatedCases.columnNames" [options]="accumulatedCases.options">
+                                </google-chart>
+                            </div>
+                            <div *ngIf="this.dataLoadingStatus.accumulatedCases == 2 " style="text-align: center;">
+                                <p>No data</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-2 col-lg-1-2" style="padding-top: 2rem;">
+                <div class="my-card">
+                    <mat-card>
+                        <mat-card-header class="bg-light">
+                            <mat-card-title class="">Confirmados segun sexo</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: 1.5em!important;">
+                            <div *ngIf="dataLoadingStatus.casesByGender == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.casesByGender == 1 && casesByGender " class="content"
+                                style="text-align: center;">
+                                <google-chart style="width: 100%; height: 300px;" [type]="casesByGender.type" [data]="casesByGender.data"
+                                    [options]="casesByGender.options">
+                                </google-chart>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.casesByGender == 2 " style="text-align: center;">
+                                <p>No data</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1" style="padding-top: 2rem;">
+                <div class="my-card">
+                    <mat-card>
+                        <mat-card-header class="bg-grey">
+                            <mat-card-title class="text-white">Segun grupo etario</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: 1.5em!important;">
+                            <div *ngIf="dataLoadingStatus.ageCases == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.ageCases == 1 && ageCases" class="content"
+                                style="text-align: center;">
+                                <google-chart style="margin: 0 auto; " [type]="ageCases.type" [data]="ageCases.data"
+                                    [columnNames]="ageCases.columnNames" [options]="ageCases.options">
+                                </google-chart>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.ageCases == 2">
+                                <p>No data</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

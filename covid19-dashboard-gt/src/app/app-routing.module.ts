@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ReportCasesComponent } from './report-cases/report-cases.component';
-import { NewCasesComponent } from './new-cases/new-cases.component';
+import { NewCaseComponent } from './new-cases/new-case.component';
 
 
 
@@ -14,9 +14,11 @@ const routes: Routes = [
     path: 'report-cases', component: ReportCasesComponent
   },
   {
-    path: 'new-cases', component: NewCasesComponent
+    path: 'new-case', component: NewCaseComponent
+  },
+  {
+    path: 'new-case/:id', component: NewCaseComponent
   }
-
 ];
 
 @NgModule({

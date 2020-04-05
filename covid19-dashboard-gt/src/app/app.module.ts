@@ -24,12 +24,14 @@ import { ReportCasesComponent } from './report-cases/report-cases.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
-import { NewCasesComponent } from './new-cases/new-cases.component';
+import { NewCaseComponent } from './new-cases/new-case.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 @NgModule({
@@ -38,7 +40,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     HomeComponent,
     NavComponent,
     ReportCasesComponent,
-    NewCasesComponent
+    NewCaseComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule,
+    MatChipsModule
   ],
   providers: [
     MatNativeDateModule  ,

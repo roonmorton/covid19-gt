@@ -15,16 +15,20 @@ class DataLoadStatus {
   */
   geoChart: number;
   reportedCases: number;
+  accumulatedCasesPerDay: number;
   accumulatedCases: number;
   casesByGender: number;
   ageCases: number;
+  
 
   constructor() {
     this.geoChart = 0;
     this.reportedCases = 0;
+    this.accumulatedCasesPerDay = 0;
     this.accumulatedCases = 0;
     this.casesByGender = 0;
     this.ageCases = 0;
+    
   }
 }
 
@@ -48,7 +52,9 @@ export class HomeComponent implements OnInit {
   reportedCasesChart: ReportedCasesChart;
 
   geoChart: Chart;
+  accumulatedCasesPerDay: Chart;
   accumulatedCases: Chart;
+
   casesByGender: Chart;
   ageCases: Chart;
   date: string;
@@ -208,6 +214,37 @@ export class HomeComponent implements OnInit {
     });
 
 
+    this.dataChartsService.getAccumulatedCasesPerDay().subscribe(response => {
+      if (response != null) {
+        if (response instanceof Array) {
+          if (response.length > 0) {
+            let arr = []
+            if (response.length > 0) {
+              response.forEach(element => {
+                arr.push(Object.values(element));
+              });
+            }
+            this.accumulatedCasesPerDay = new Chart('Line', arr, ['Días', 'Confirmados'], {
+              legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
+            });
+            this.dataLoadingStatus.accumulatedCasesPerDay = 1;
+          } else
+            this.dataLoadingStatus.accumulatedCasesPerDay = 2;
+
+        } else
+          this.dataLoadingStatus.accumulatedCasesPerDay = 2;
+
+
+      } else
+        this.dataLoadingStatus.accumulatedCasesPerDay = 2;
+
+
+    }, err => {
+      this.dataLoadingStatus.accumulatedCasesPerDay = 2;
+    });
+
+
+
     this.dataChartsService.getAccumulatedCases().subscribe(response => {
       if (response != null) {
         if (response instanceof Array) {
@@ -218,7 +255,7 @@ export class HomeComponent implements OnInit {
                 arr.push(Object.values(element));
               });
             }
-            this.accumulatedCases = new Chart('Line', arr, ['Día', 'Confirmados'], {
+            this.accumulatedCases = new Chart('Line', arr, ['Días', 'Confirmados'], {
               legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
             });
             this.dataLoadingStatus.accumulatedCases = 1;
@@ -236,7 +273,6 @@ export class HomeComponent implements OnInit {
     }, err => {
       this.dataLoadingStatus.accumulatedCases = 2;
     });
-
 
     this.dataChartsService.getAgeCases().subscribe(response => {
       /* let arr = []

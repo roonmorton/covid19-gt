@@ -8,14 +8,16 @@ var Municipios = function(Municipios) {
 };
 
 var ParseInsert=function(InsertCase){
-    this.name = InsertCase.person.name;
-    this.lastname = InsertCase.person.lastname;
-    this.age = InsertCase.person.age;
-    this.id_gender = InsertCase.person.id_gender;
-    this.id_status = InsertCase.case.id_status;
-    this.id_department = InsertCase.case.id_department;
-    this.address = InsertCase.case.address;
-    this.description = InsertCase.case.description;
+    this.names = InsertCase.names;
+    this.lastname = InsertCase.lastname;
+    this.age = InsertCase.age;
+    this.gender = InsertCase.gender;
+    this.status = InsertCase.status;
+    this.state = InsertCase.state;
+    this.address = InsertCase.address;
+    this.description = InsertCase.description;
+    this.contagionDate=new Date(InsertCase.contagionDate);
+    this.recoveryDate= new Date(InsertCase.recoveryDate);
 };
 
 Municipios.getStatsMuni = function(result) {
@@ -95,7 +97,7 @@ Municipios.getByAcumCases = function(result) {
 };
 
 Municipios.getCasesInfo = function(result) {
-    sql.query("SELECT CONCAT(TP.nombres,\" \",TP.apellidos) AS name, TG.nombre_genero as gender, TP.edad as age,TEP.nombre_estado as status,TD.nombre_departamento as department_name, TC.fecha_contagio,ifnull(TC.fecha_recuperacion,'NO DISPONIBLE')as recovery_date FROM esdavil1_covid19.tbl_casos TC INNER JOIN esdavil1_covid19.tbl_personas TP ON TP.id_persona=TC.id_persona INNER JOIN esdavil1_covid19.tbl_departamentos TD ON TD.id_departamento=TC.id_departamento INNER JOIN esdavil1_covid19.tbl_generos TG ON TG.id_genero=TP.id_genero INNER JOIN esdavil1_covid19.tbl_estados_pacientes TEP ON TEP.id_estado=TC.id_estado", function(err, res) {
+    sql.query("SELECT TC.id_caso as id_case,TEP.id_estado,TP.id_persona as id_person,TD.id_departamento as id_department,CONCAT(TP.nombres,\" \",TP.apellidos) AS name, TG.nombre_genero as gender, TP.edad as age,TEP.nombre_estado as status,TD.nombre_departamento as department_name, TC.fecha_contagio,ifnull(TC.fecha_recuperacion,'NO DISPONIBLE')as recovery_date FROM esdavil1_covid19.tbl_casos TC INNER JOIN esdavil1_covid19.tbl_personas TP ON TP.id_persona=TC.id_persona INNER JOIN esdavil1_covid19.tbl_departamentos TD ON TD.id_departamento=TC.id_departamento INNER JOIN esdavil1_covid19.tbl_generos TG ON TG.id_genero=TP.id_genero INNER JOIN esdavil1_covid19.tbl_estados_pacientes TEP ON TEP.id_estado=TC.id_estado", function(err, res) {
         if (err) {
             console.log("error: ", err);
             result(null, err);
@@ -156,39 +158,20 @@ Municipios.getAllPeople = function(result) {
 };
 
 
-Municipios.createUser = function(userNew, result) {
-    var newUser = userNew.personalInformation;
-    var newCredential = userNew.credentialInformation;
-    var newPhone = userNew.phoneInformation;
-    var id_usuario;
-    sql.query("INSERT INTO `analisis`.`tb_personas` (`Persona_Nombre1`, `Persona_Nombre2`, `Persona_Apellido1`, `Persona_Apellido2`, `Persona_dpi`, `Persona_Nit`) VALUES (?,?,?,?,?,?)", [newUser.nombre, newUser.nombre2, newUser.apellido, newUser.apellido2, newUser.dpi, newUser.nit], function(err, res) {
+Municipios.createCase = function(newCase, result) {
+    let ok= new ParseInsert(newCase);
+    sql.query("insert into tbl_personas(nombres,apellidos,edad,id_genero) values(?,?,?,?)", [ok.names, ok.lastname, ok.age, ok.gender], function(err, res) {
         if (err) {
             console.log("error: ", err);
             result(err, null);
         } else {
             console.log(res.insertId);
-            id_usuario = res.insertId;
-            //result(null, res.insertId);
-            sql.query("INSERT INTO `analisis`.`tb_usuarios` (`Usuario_correo`, `Usuario_contrasenia`, `Persona_Id_FK`, `RolUsuario_Id_FK`) VALUES (?,?,?,?)", [newCredential.correo, newCredential.contrasenia, res.insertId, newCredential.rol], function(err, res) {
+            sql.query("insert into tbl_casos(id_persona,id_estado,id_departamento,direccion_caso,descripcion_caso,fecha_contagio,fecha_recuperacion) values(?,?,?,?,?,?,?)", [res.insertId, ok.status, ok.state, ok.address,ok.description,ok.contagionDate,ok.recoveryDate], function(err, res) {
                 if (err) {
                     console.log("error: ", err);
-                    result(err, null);
+                    result({ status: "403", message: "No se pudo ingresar el nuevo caso" }, null);
                 } else {
-                    sql.query("INSERT INTO `analisis`.`tb_telefonos` (`Telefono_Numero`, `Persona_Id_FK`) VALUES (?, ?)", [newPhone.numero, id_usuario], function(err, res) {
-                        if (err) {
-                            console.log("error: ", err);
-                            result(err, null);
-                        } else {
-                            // sql.query("INSERT INTO `analisis`.`tb_trabajador` (`Persona_Id_FK`, `TipoTrabajo_Id_FK`) VALUES (?, ?)", [id_usuario, newUser.tipoTrabajo], function(err, res) {
-                            //     if (err) {
-                            //         console.log("error: ", err);
-                            //         result(err, null);
-                            //     } else {
-                            result(null, { status: "200", message: "OK" });
-                            //     }
-                            // });
-                        }
-                    });
+                    result(null, { status: "200", message: "OK" });
                 }
             });
         }

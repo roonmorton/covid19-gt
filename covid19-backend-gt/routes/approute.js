@@ -35,4 +35,8 @@ module.exports = function (app) {
     app.route('/covid19dash/status')
         .get(stats.get_status_info);
 
+    app.route('/covid19dash/newcase')
+        .post(stats.create_new_case)
+        .put(stats.create_new_case);
+
 };

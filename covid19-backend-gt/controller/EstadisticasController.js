@@ -132,3 +132,38 @@ exports.get_people_info = function(req, res) {
         res.send(statsmonth);
     });
 };
+
+exports.create_new_case = function(req, res) {
+    var cases= req.body;
+    console.log(cases);
+    console.log(!cases.names,
+        !cases.lastname , 
+        !cases.age ,
+        !cases.gender ,
+        !cases.status ,
+        !cases.state ,
+        !cases.address,
+        !cases.description ,
+        !cases.contagionDate ,
+        !cases.recoveryDate);
+    if (!cases.names || 
+        !cases.lastname || 
+        !cases.age ||
+        !cases.gender ||
+        !cases.status ||
+        !cases.state ||
+        !cases.address||
+        !cases.description ||
+        !cases.contagionDate ||
+        !cases.recoveryDate ) {
+        res.status(400).send({ error: true, message: 'Parametros Invalidos :3' });
+    } else {
+        Muni.createCase(cases, function(err, user) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(user);
+            }
+        });
+    }
+};

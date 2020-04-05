@@ -1,8 +1,8 @@
 'use strict';
 var Muni = require('../model/municipiosModel');
 
-exports.get_stats_munis = function(req, res) {
-    Muni.getStatsMuni(function(err, departament) {
+exports.get_stats_munis = function (req, res) {
+    Muni.getStatsMuni(function (err, departament) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -10,8 +10,8 @@ exports.get_stats_munis = function(req, res) {
         res.send(departament);
     });
 };
-exports.get_stats_pacients = function(req, res) {
-    Muni.getStatsPacients(function(err, departament) {
+exports.get_stats_pacients = function (req, res) {
+    Muni.getStatsPacients(function (err, departament) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -20,8 +20,8 @@ exports.get_stats_pacients = function(req, res) {
     });
 };
 
-exports.get_stats_gender = function(req, res) {
-    Muni.getStatsGender(function(err, departament) {
+exports.get_stats_gender = function (req, res) {
+    Muni.getStatsGender(function (err, departament) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -30,8 +30,8 @@ exports.get_stats_gender = function(req, res) {
     });
 };
 
-exports.get_stats_month = function(req, res) {
-    Muni.getStatsByMonth(function(err, statsmonth) {
+exports.get_stats_month = function (req, res) {
+    Muni.getStatsByMonth(function (err, statsmonth) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -43,8 +43,8 @@ exports.get_stats_month = function(req, res) {
     });
 };
 
-exports.get_stats_gage = function(req, res) {
-    Muni.getByGenderAge(function(err, statsmonth) {
+exports.get_stats_gage = function (req, res) {
+    Muni.getByGenderAge(function (err, statsmonth) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -72,8 +72,8 @@ exports.get_stats_gage = function(req, res) {
     });
 };
 
-exports.get_stats_acum = function(req, res) {
-    Muni.getByAcumCases(function(err, statsmonth) {
+exports.get_stats_acum = function (req, res) {
+    Muni.getByAcumCases(function (err, statsmonth) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -83,8 +83,8 @@ exports.get_stats_acum = function(req, res) {
     });
 };
 
-exports.get_cases_info = function(req, res) {
-    Muni.getCasesInfo(function(err, statsmonth) {
+exports.get_cases_info = function (req, res) {
+    Muni.getCasesInfo(function (err, statsmonth) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -93,8 +93,8 @@ exports.get_cases_info = function(req, res) {
 
     });
 };
-exports.get_dep_info = function(req, res) {
-    Muni.getAllDepartaments(function(err, statsmonth) {
+exports.get_dep_info = function (req, res) {
+    Muni.getAllDepartaments(function (err, statsmonth) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -103,8 +103,8 @@ exports.get_dep_info = function(req, res) {
 
     });
 };
-exports.get_gender_info = function(req, res) {
-    Muni.getAllGenders(function(err, statsmonth) {
+exports.get_gender_info = function (req, res) {
+    Muni.getAllGenders(function (err, statsmonth) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -113,8 +113,8 @@ exports.get_gender_info = function(req, res) {
     });
 };
 
-exports.get_status_info = function(req, res) {
-    Muni.getAllStatus(function(err, statsmonth) {
+exports.get_status_info = function (req, res) {
+    Muni.getAllStatus(function (err, statsmonth) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -123,8 +123,8 @@ exports.get_status_info = function(req, res) {
     });
 };
 
-exports.get_people_info = function(req, res) {
-    Muni.getAllPeople(function(err, statsmonth) {
+exports.get_people_info = function (req, res) {
+    Muni.getAllPeople(function (err, statsmonth) {
         console.log('controller')
         if (err)
             res.send(err);
@@ -133,32 +133,32 @@ exports.get_people_info = function(req, res) {
     });
 };
 
-exports.create_new_case = function(req, res) {
-    var cases= req.body;
+exports.create_new_case = function (req, res) {
+    var cases = req.body;
     console.log(cases);
     console.log(!cases.names,
-        !cases.lastname , 
-        !cases.age ,
-        !cases.gender ,
-        !cases.status ,
-        !cases.state ,
+        !cases.lastname,
+        !cases.age,
+        !cases.gender,
+        !cases.status,
+        !cases.state,
         !cases.address,
-        !cases.description ,
-        !cases.contagionDate ,
+        !cases.description,
+        !cases.contagionDate,
         !cases.recoveryDate);
-    if (!cases.names || 
-        !cases.lastname || 
+    if (!cases.names ||
+        !cases.lastname ||
         !cases.age ||
         !cases.gender ||
         !cases.status ||
         !cases.state ||
-        !cases.address||
+        !cases.address ||
         !cases.description ||
         !cases.contagionDate ||
-        !cases.recoveryDate ) {
+        !cases.recoveryDate) {
         res.status(400).send({ error: true, message: 'Parametros Invalidos :3' });
     } else {
-        Muni.createCase(cases, function(err, user) {
+        Muni.createCase(cases, function (err, user) {
             if (err) {
                 res.send(err);
             } else {
@@ -166,4 +166,13 @@ exports.create_new_case = function(req, res) {
             }
         });
     }
+};
+
+exports.read_a_case = function (req, res) {
+    console.log(req.params);
+    Muni.getCaseById(req.params.caseId, function(err, task) {
+        if (err)
+            res.send(err);
+        res.json(task);
+    });
 };

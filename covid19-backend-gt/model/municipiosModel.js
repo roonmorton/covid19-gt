@@ -145,6 +145,18 @@ Municipios.getAllGenders = function(result) {
     });
 };
 
+Municipios.getCaseById = function(caseId,result) {
+    sql.query("SELECT TC.id_caso as id_case,TEP.id_estado,TP.id_persona as id_person,TD.id_departamento as id_department,CONCAT(TP.nombres,\" \",TP.apellidos) AS name, TG.nombre_genero as gender, TP.edad as age,TEP.nombre_estado as status,TD.nombre_departamento as department_name, TC.fecha_contagio,ifnull(TC.fecha_recuperacion,'NO DISPONIBLE')as recovery_date FROM esdavil1_covid19.tbl_casos TC INNER JOIN esdavil1_covid19.tbl_personas TP ON TP.id_persona=TC.id_persona INNER JOIN esdavil1_covid19.tbl_departamentos TD ON TD.id_departamento=TC.id_departamento INNER JOIN esdavil1_covid19.tbl_generos TG ON TG.id_genero=TP.id_genero INNER JOIN esdavil1_covid19.tbl_estados_pacientes TEP ON TEP.id_estado=TC.id_estado WHERE TC.id_caso=?",[caseId], function(err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+        } else {
+            console.log('respuesta : ', res);
+            result(null, res);
+        }
+    });
+};
+
 Municipios.getAllPeople = function(result) {
     sql.query("SELECT nombres as name, apellidos as lastname,edad as age, id_genero as id_gender FROM esdavil1_covid19.tbl_personas", function(err, res) {
         if (err) {

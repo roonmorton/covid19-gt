@@ -135,6 +135,7 @@ exports.get_people_info = function (req, res) {
 
 exports.create_new_case = function (req, res) {
     var cases = req.body;
+    console.log('Insert');
     console.log(cases);
     console.log(!cases.names,
         !cases.lastname,
@@ -146,18 +147,18 @@ exports.create_new_case = function (req, res) {
         !cases.description,
         !cases.contagionDate,
         !cases.recoveryDate);
-    if (!cases.names ||
-        !cases.lastname ||
-        !cases.age ||
-        !cases.gender ||
-        !cases.status ||
-        !cases.state ||
-        !cases.address ||
-        !cases.description ||
-        !cases.contagionDate ||
-        !cases.recoveryDate) {
-        res.status(400).send({ error: true, message: 'Parametros Invalidos :3' });
-    } else {
+    // if (!cases.names ||
+    //     !cases.lastname ||
+    //     !cases.age ||
+    //     !cases.gender ||
+    //     !cases.status ||
+    //     !cases.state ||
+    //     !cases.address ||
+    //     !cases.description ||
+    //     !cases.contagionDate ||
+    //     !cases.recoveryDate) {
+    //     res.status(400).send({ error: true, message: 'Parametros Invalidos :3' });
+    // } else {
         Muni.createCase(cases, function (err, user) {
             if (err) {
                 res.send(err);
@@ -165,7 +166,7 @@ exports.create_new_case = function (req, res) {
                 res.json(user);
             }
         });
-    }
+    //}
 };
 
 exports.read_a_case = function (req, res) {
@@ -175,4 +176,31 @@ exports.read_a_case = function (req, res) {
             res.send(err);
         res.json(task);
     });
+};
+
+
+exports.update_a_case = function (req, res) {
+    var cases = req.body;
+    console.log('Update');
+    console.log(cases);
+    console.log(!cases.names,
+        !cases.lastname,
+        !cases.age,
+        !cases.gender,
+        !cases.status,
+        !cases.state,
+        !cases.address,
+        !cases.description,
+        !cases.contagionDate,
+        !cases.recoveryDate,
+        !cases.idPerson,
+        !cases.idCase);
+        Muni.updateCase(cases, function (err, user) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.json(user);
+            }
+        });
+    
 };

@@ -18,6 +18,9 @@ const routes: Routes = [
   },
   {
     path: 'new-case/:id', component: NewCaseComponent
+  },
+  {
+    path: '**', component: HomeComponent
   }
 ];
 

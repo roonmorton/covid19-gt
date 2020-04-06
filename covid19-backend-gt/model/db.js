@@ -8,7 +8,7 @@ var dbconfig = {
     connectionLimit: 10,
     user: 'esdavil1_david',
     password: 'Asnaeb@123',
-    database: 'esdavil1_covid19_prod'
+    database: 'esdavil1_covid19'
 };
 
 

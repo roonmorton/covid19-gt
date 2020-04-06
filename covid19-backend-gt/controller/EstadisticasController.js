@@ -50,6 +50,8 @@ exports.get_stats_gage = function (req, res) {
             res.send(err);
         let jsonParse = {};
         let jsonResponse = [];
+        let c = [];
+        let b =[];
         for (let index = 0; index < statsmonth.length; index++) {
             for (var key in statsmonth[index]) {
                 var attrName = key;
@@ -57,17 +59,26 @@ exports.get_stats_gage = function (req, res) {
                 if (jsonParse.hasOwnProperty(key)) {
                     jsonParse[key].push(attrValue);
                 } else {
-                    jsonParse[key] = [key, attrValue];
+                    if (key === "bars"||key === "color") {
+                        jsonParse[key] = [attrValue];
+                    } else {
+                        jsonParse[key] = [key, attrValue];
+                    }
                 }
             }
         }
+        b = jsonParse.bars;
+        c = jsonParse.color;
+        delete jsonParse.bars;
+        delete jsonParse.color;
         for (var key in jsonParse) {
             var attrName = key;
             var attrValue = jsonParse[attrName];
             jsonResponse.push(attrValue);
         }
         console.log(jsonResponse);
-        res.send(jsonResponse);
+        b.unshift("Edades");
+        res.send({ data: jsonResponse, bars: b, color: c });
 
     });
 };
@@ -159,19 +170,19 @@ exports.create_new_case = function (req, res) {
     //     !cases.recoveryDate) {
     //     res.status(400).send({ error: true, message: 'Parametros Invalidos :3' });
     // } else {
-        Muni.createCase(cases, function (err, user) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.json(user);
-            }
-        });
+    Muni.createCase(cases, function (err, user) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(user);
+        }
+    });
     //}
 };
 
 exports.read_a_case = function (req, res) {
     console.log(req.params);
-    Muni.getCaseById(req.params.caseId, function(err, task) {
+    Muni.getCaseById(req.params.caseId, function (err, task) {
         if (err)
             res.send(err);
         res.json(task);
@@ -195,12 +206,12 @@ exports.update_a_case = function (req, res) {
         !cases.recoveryDate,
         !cases.idPerson,
         !cases.idCase);
-        Muni.updateCase(cases, function (err, user) {
-            if (err) {
-                res.send(err);
-            } else {
-                res.json(user);
-            }
-        });
-    
+    Muni.updateCase(cases, function (err, user) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json(user);
+        }
+    });
+
 };

@@ -9,12 +9,12 @@ var mysql = require('mysql');
 */
 
 var dbconfig = {
-    host: 'mysql1008.mochahost.com',
+    host: '',
     port: '3306',
     connectionLimit: 10,
-    user: 'esdavil1_c19prod',
-    password: '9DS(h~M{FuPt',
-    database: 'esdavil1_covid19'
+    user: '',
+    password: '',
+    database: ''
 };
 
 

@@ -77,8 +77,14 @@ exports.get_stats_gage = function (req, res) {
             jsonResponse.push(attrValue);
         }
         console.log(jsonResponse);
-        b.unshift("Edades");
-        res.send({ data: jsonResponse, bars: b, color: c });
+        if(c){
+            b.unshift("Edades");
+            res.send({ data: jsonResponse, bars: b, color: c });
+            
+        }else{
+            res.send({ data: [], bars: [], color: [] })
+        }
+        
 
     });
 };

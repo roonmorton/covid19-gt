@@ -39,4 +39,4 @@ module.exports = function (app) {
         .post(stats.create_new_case)
         .put(stats.create_new_case);
 
-};
+}; 

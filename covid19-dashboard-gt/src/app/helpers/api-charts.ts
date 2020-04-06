@@ -40,7 +40,7 @@ export class ApiCharts{
     }
 
     public saveCase(): string{
-        return environment.apiUrl + '/covid19dash/newcase';
+        return environment.apiUrl + '/covid19dash/case';
     }
     
     public getCase(paramId: string): string{

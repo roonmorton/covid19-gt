@@ -19,7 +19,7 @@ class DataLoadStatus {
   accumulatedCases: number;
   casesByGender: number;
   ageCases: number;
-  
+
 
   constructor() {
     this.geoChart = 0;
@@ -28,7 +28,7 @@ class DataLoadStatus {
     this.accumulatedCases = 0;
     this.casesByGender = 0;
     this.ageCases = 0;
-    
+
   }
 }
 
@@ -123,9 +123,6 @@ export class HomeComponent implements OnInit {
     //this.loadResumenCases();
     this.dataLoadingStatus = new DataLoadStatus();
 
-
-
-
     this.dataChartsService.getDataGeo().subscribe(response => {
 
       if (response != null) {
@@ -169,9 +166,7 @@ export class HomeComponent implements OnInit {
           this.reportedCasesChart = new ReportedCasesChart(response);
           this.dataLoadingStatus.reportedCases = 1;
         } else
-          this.dataLoadingStatus.reportedCases = 1;
-
-
+          this.dataLoadingStatus.reportedCases = 2;
       } else
         this.dataLoadingStatus.reportedCases = 2;
 
@@ -195,7 +190,8 @@ export class HomeComponent implements OnInit {
               legend: { position: 'bottom' },
               slices: {
                 0: { color: 'pink' },
-                1: { color: 'gray' }
+                1: { color: 'gray' },
+                3: { color: '#76A7FA'}
               }
             });
             this.dataLoadingStatus.casesByGender = 1;
@@ -282,31 +278,37 @@ export class HomeComponent implements OnInit {
           arr.push(Object.values(element));
         });
       } */
+      console.log(response);
       if (response != null) {
-        if (response instanceof Array) {
-          if (response.length > 0) {
-            this.ageCases = new Chart('Bar', response,
-              ['Edades', 'Hombre', 'Mujeres'], {
-              width: '100%',
-              height: '400px',
-              legend: { position: 'labeled', textStyle: { color: 'blue', fontSize: 16 } },
-              pieSliceText: 'label',
-              colors: ['gray', 'pink'],
-              chartArea: {
-                height: '200',
-                width: '100%'
+        if (response instanceof Object) {
+          if (response.data) {
+            if (response.data instanceof Array) {
+              if (response.data.length > 0) {
+                // console.log(response);
+                this.ageCases = new Chart('Bar', response.data,
+                  response.bars, {
+                  width: '100%',
+                  height: '400px',
+                  legend: { position: 'labeled', textStyle: { color: 'blue', fontSize: 16 } },
+                  pieSliceText: 'label',
+                  colors: response.color,
+                  chartArea: {
+                    height: '200',
+                    width: '100%'
+                  }
+                });
+                this.dataLoadingStatus.ageCases = 1;
               }
-            });
-            this.dataLoadingStatus.ageCases = 1;
-          }
-          else
-            this.dataLoadingStatus.ageCases = 2;
-
-        } else
+              else
+                this.dataLoadingStatus.ageCases = 2;
+            } else
+              this.dataLoadingStatus.ageCases = 2;
+          }else
           this.dataLoadingStatus.ageCases = 2;
-
+        }else
+        this.dataLoadingStatus.ageCases = 2;
       } else
-        this.dataLoadingStatus.ageCases = 1;
+        this.dataLoadingStatus.ageCases = 2;
     }, err => {
       this.dataLoadingStatus.ageCases = 2;
     });

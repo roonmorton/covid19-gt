@@ -7,11 +7,14 @@ import { GenderService } from '../services/gender.service';
 import { Gender } from '../models/Gender';
 import { StatusService } from '../services/status.service';
 import { Status } from '../models/Status';
-import { Case } from '../report-cases/report-cases.component';
+import { Case } from '../models/Case';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { map, filter } from 'rxjs/operators';
+import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+
 
 @Component({
   selector: 'app-new-case',
@@ -33,17 +36,21 @@ export class NewCaseComponent implements OnInit {
     names: new FormControl(''),
     lastname: new FormControl(''),
     age: new FormControl(''),
-    gender: new FormControl(''),
-    status: new FormControl(''),
+    gender: new FormControl('',
+      Validators.required),
+    status: new FormControl('',
+      Validators.required),
     state: new FormControl('',
       Validators.required), // Departamento
     address: new FormControl(''),
     description: new FormControl(''),
     contagionDate: new FormControl(''),
-    recoveryDate: new FormControl('')
+    recoveryDate: new FormControl(''),
+    idPerson: new FormControl('')
   });
 
   private routeSub: Subscription;
+  private caseEdit: Case = new Case();
   private idCase: string;
   constructor(
     private casesService: CaseService,
@@ -51,32 +58,17 @@ export class NewCaseComponent implements OnInit {
     private genderService: GenderService,
     private statusService: StatusService,
     private _snackBar: MatSnackBar,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public router: Router,
   ) {
 
     this.routeSub = this.route.params.subscribe(params => {
-      console.log(params['id'])
       this.idCase = params['id'];
     });
 
   }
 
   ngOnInit(): void {
-    if (this.idCase) {
-      this.casesService.getCase(this.idCase).subscribe(response => {
-        if (typeof response === 'object') {
-          if (response.status === '200') {
-            console.log(response);
-          }
-        } else
-          this.loader = -1;
-      },
-        err => {
-          this.loader = -1;
-        });
-    }
-
-
     this.departamentService.getDepartament().subscribe(response => {
       if (response != null) {
         if (response instanceof Array) {
@@ -127,11 +119,45 @@ export class NewCaseComponent implements OnInit {
       err => {
         this.loader = -1;
       });
+    if (this.idCase) {
+      this.casesService.getCase(this.idCase).subscribe(response => {
+        console.log(response);
+        if (response != null) {
+          if (response instanceof Array) {
+            if (response.length == 1) {
+              this.caseForm.patchValue(
+                {
+                  idCase: response[0].id_case,
+                  names: response[0].name,
+                  lastname: response[0].lastname,
+                  age: response[0].age,
+                  gender: response[0].id_gender,//id Genero
+                  status: response[0].id_estado,
+                  state: response[0].id_department,
+                  address: response[0].address,
+                  description: response[0].description,
+                  contagionDate: response[0].contagion_date == 'NO DISPONIBLE' ? '' : response[0].contagion_date,
+                  recoveryDate: response[0].recovery_date == 'NO DISPONIBLE' ? '' : response[0].recovery_date,
+                  idPerson: response[0].id_person
+                });
+            }
+          }
+        } else
+          this.loader = -1;
+      },
+        err => {
+          this.loader = -1;
+        });
+    }
+
+
+
+
   }
 
 
   saveCase(frmCase: Case) {
-
+//console.log(frmCase);
     this.loader = 4;
     this.casesService.saveCase(frmCase).subscribe(response => {
       if (response != null) {
@@ -154,6 +180,7 @@ export class NewCaseComponent implements OnInit {
             );
             this.loader = 5;
             this.showMessage("Caso guardado correctamente");
+            this.router.navigate(['report-cases']);
           } else {
             this.loader = 5;
             this.showMessage("Ocurrio un error, intentarlo mas tarde");

@@ -56,7 +56,7 @@
                 </ng-container>
                 <ng-container matColumnDef="fecha_contagio">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Contagio </th>
-                    <td mat-cell *matCellDef="let element"> {{element.fecha_contagio}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.contagion_date}} </td>
                 </ng-container>
                 <ng-container matColumnDef="recovery_date">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Recuperación </th>
@@ -65,7 +65,7 @@
                 <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
-                        <a mat-icon-button aria-label="Editar caso" (click)="gotoEditCase(element)" >
+                        <a mat-icon-button aria-label="Editar caso" [routerLink]="['/new-case', element.id_case]">
                             <mat-icon>edit</mat-icon>
                         </a>
                     </td>

@@ -9,4 +9,6 @@ export class Case{
     description: string;
     contagionDate: string;
     recoveryDate: string;
+    id_case: string;
+    idCase: string;
 }

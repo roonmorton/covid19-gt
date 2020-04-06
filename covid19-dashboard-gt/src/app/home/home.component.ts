@@ -90,8 +90,6 @@ export class HomeComponent implements OnInit {
     let monthDay = date.toLocaleString('es-MX', { day: '2-digit', month: 'long' }).replace('.', '').replace('-', ' ');
     let weekDay = date.toLocaleString('es-MX', { weekday: 'long' }).replace('.', '');
     this.date = weekDay + ' ' + monthDay + ' ' + date.getFullYear();
-    /* console.log(monthDay);
-    console.log(weekDay); */
 
     //segundo: t.getSeconds() < 10 ? '0' + t.getSeconds() : t.getSeconds().toString()
 
@@ -189,9 +187,9 @@ export class HomeComponent implements OnInit {
             this.casesByGender = new Chart('PieChart', arr, [], {
               legend: { position: 'bottom' },
               slices: {
-                0: { color: 'pink' },
-                1: { color: 'gray' },
-                3: { color: '#76A7FA'}
+                0: { color: '#76A7FA' },
+                1: { color: 'pink' },
+                3: { color: 'gray' }
               }
             });
             this.dataLoadingStatus.casesByGender = 1;
@@ -215,11 +213,9 @@ export class HomeComponent implements OnInit {
         if (response instanceof Array) {
           if (response.length > 0) {
             let arr = []
-            if (response.length > 0) {
               response.forEach(element => {
                 arr.push(Object.values(element));
               });
-            }
             this.accumulatedCasesPerDay = new Chart('Line', arr, ['Días', 'Confirmados'], {
               legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
             });
@@ -244,17 +240,17 @@ export class HomeComponent implements OnInit {
     this.dataChartsService.getAccumulatedCases().subscribe(response => {
       if (response != null) {
         if (response instanceof Array) {
+          
           if (response.length > 0) {
             let arr = []
-            if (response.length > 0) {
               response.forEach(element => {
                 arr.push(Object.values(element));
               });
-            }
-            this.accumulatedCases = new Chart('Line', arr, ['Días', 'Confirmados'], {
-              legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
-            });
-            this.dataLoadingStatus.accumulatedCases = 1;
+              this.accumulatedCases = new Chart('Line', arr, ['Días', 'Confirmados'], {
+                legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
+              });
+              this.dataLoadingStatus.accumulatedCases = 1;
+            
           } else
             this.dataLoadingStatus.accumulatedCases = 2;
 
@@ -272,19 +268,17 @@ export class HomeComponent implements OnInit {
 
     this.dataChartsService.getAgeCases().subscribe(response => {
       /* let arr = []
-      console.log(response);
       if (response.length > 0) {
         response.forEach(element => {
           arr.push(Object.values(element));
         });
       } */
-      console.log(response);
+      //console.log(response);
       if (response != null) {
         if (response instanceof Object) {
           if (response.data) {
             if (response.data instanceof Array) {
               if (response.data.length > 0) {
-                // console.log(response);
                 this.ageCases = new Chart('Bar', response.data,
                   response.bars, {
                   width: '100%',
@@ -303,10 +297,10 @@ export class HomeComponent implements OnInit {
                 this.dataLoadingStatus.ageCases = 2;
             } else
               this.dataLoadingStatus.ageCases = 2;
-          }else
+          } else
+            this.dataLoadingStatus.ageCases = 2;
+        } else
           this.dataLoadingStatus.ageCases = 2;
-        }else
-        this.dataLoadingStatus.ageCases = 2;
       } else
         this.dataLoadingStatus.ageCases = 2;
     }, err => {

@@ -5,6 +5,16 @@
                 <div class="col-sm-1-1 " style="text-align: right; padding: 1em;">
                     <ul class="breadcrumb">
                         <li class="active">
+                            <a routerLink="/" target="_blank">
+                                <span>
+                                    <mat-icon>dashboard</mat-icon>
+                                </span>
+                                <span>
+                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="active">
                             <a routerLink="/report-cases">
                                 Casos reportados
                                 <span>
@@ -16,7 +26,6 @@
                             <a routerLink="/new-case/">
                                 Nuevo caso
                             </a>
-
                         </li>
                     </ul>
                 </div>
@@ -27,10 +36,10 @@
 
 <div class="section">
     <div class="frow-container">
-        
+
         <div class="frow row-center">
             <div class="col-sm-1-2 " style="text-align: right; padding: 1em;">
-                <mat-card *ngIf="loader == 3 || loader == 5"style="padding: 0;" class="mat-elevation-z8">
+                <mat-card *ngIf="loader == 3 || loader == 5" style="padding: 0;" class="mat-elevation-z8">
                     <mat-card-header style="padding: 10px; color:#fff;" class="bg-blue-dark">
                         <mat-card-title>
                             <h1 class="mat-h1">
@@ -40,7 +49,8 @@
                     </mat-card-header>
                     <mat-card-content style="padding: 1.5em;">
                         <div>
-                            <form [formGroup]="caseForm" style="padding-top: 1em;" (ngSubmit)="caseForm.valid && saveCase(caseForm.value)">
+                            <form [formGroup]="caseForm" style="padding-top: 1em;"
+                                (ngSubmit)="caseForm.valid && saveCase(caseForm.value)">
                                 <div class="frow">
                                     <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
                                         <mat-form-field class="fluid" appearance="outline">
@@ -128,7 +138,7 @@
                                 </mat-select> -->
 
                                 </mat-form-field>
-                                
+
                                 <div class="frow">
                                     <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
                                         <mat-form-field appearance="outline" class="fluid">
@@ -190,4 +200,3 @@
         </div>
     </div>
 </div>
-

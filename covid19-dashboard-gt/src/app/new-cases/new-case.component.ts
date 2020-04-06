@@ -121,7 +121,7 @@ export class NewCaseComponent implements OnInit {
       });
     if (this.idCase) {
       this.casesService.getCase(this.idCase).subscribe(response => {
-        console.log(response);
+        //console.log(response);
         if (response != null) {
           if (response instanceof Array) {
             if (response.length == 1) {

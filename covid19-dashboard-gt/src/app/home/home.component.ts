@@ -243,11 +243,15 @@ export class HomeComponent implements OnInit {
           
           if (response.length > 0) {
             let arr = []
+            arr.push(['','', { role: 'style' }]);
               response.forEach(element => {
-                arr.push(Object.values(element));
+                let values = Object.values(element);
+                values.push(Object.values(element)[1].toString());
+                arr.push(values);
               });
-              this.accumulatedCases = new Chart('Line', arr, ['Días', 'Confirmados'], {
-                legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
+              console.log(arr);
+              this.accumulatedCases = new Chart('ColumnChart', arr, ['Días', 'Confirmados'], {
+                legend: { position: 'none', textStyle: { color: '#1f2227', fontSize: 16 } },
               });
               this.dataLoadingStatus.accumulatedCases = 1;
             

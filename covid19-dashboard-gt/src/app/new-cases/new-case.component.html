@@ -1,0 +1,202 @@
+<mat-toolbar class="mat-elevation-z8">
+    <div class="section">
+        <div class="frow-container">
+            <div class="frow row-end">
+                <div class="col-sm-1-1 " style="text-align: right; padding: 1em;">
+                    <ul class="breadcrumb">
+                        <li class="active">
+                            <a routerLink="/" target="_blank">
+                                <span>
+                                    <mat-icon>dashboard</mat-icon>
+                                </span>
+                                <span>
+                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a routerLink="/report-cases">
+                                Casos reportados
+                                <span>
+                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/new-case/">
+                                Nuevo caso
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-toolbar>
+
+<div class="section">
+    <div class="frow-container">
+
+        <div class="frow row-center">
+            <div class="col-sm-1-2 " style="text-align: right; padding: 1em;">
+                <mat-card *ngIf="loader == 3 || loader == 5" style="padding: 0;" class="mat-elevation-z8">
+                    <mat-card-header style="padding: 10px; color:#fff;" class="bg-blue-dark">
+                        <mat-card-title>
+                            <h1 class="mat-h1">
+                                Reportar caso
+                            </h1>
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content style="padding: 1.5em;">
+                        <div>
+                            <form [formGroup]="caseForm" style="padding-top: 1em;"
+                                (ngSubmit)="caseForm.valid && saveCase(caseForm.value)">
+                                <div class="frow">
+                                    <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                        <mat-form-field class="fluid" appearance="outline">
+                                            <mat-label>Nombres</mat-label>
+                                            <input matInput formControlName="names">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                        <mat-form-field class="fluid" appearance="outline">
+                                            <mat-label>Apellidos</mat-label>
+                                            <input matInput formControlName="lastname">
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+                                <div class="frow">
+                                    <div class="col-xs-1-2 col-sm-1-3 col-md-1-3">
+                                        <mat-form-field class="fluid" appearance="outline">
+                                            <mat-label>Edad</mat-label>
+                                            <input matInput formControlName="age" type="number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-1-2 col-sm-1-3 col-md-1-3">
+                                        <mat-form-field class="fluid" appearance="outline">
+                                            <mat-label>Genero</mat-label>
+                                            <mat-select formControlName="gender">
+                                                <mat-option *ngFor="let dep of this.genders" [value]="dep.id">
+                                                    {{dep.gender}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <!-- <mat-select formControlName="gender">
+                                            <mat-option [value]="'1'">
+                                                Masculino
+                                            </mat-option>
+                                            <mat-option [value]="'2'">
+                                                Femenino
+                                            </mat-option>
+                                            <mat-option [value]="'3'">
+                                                Indefinido
+                                            </mat-option>
+                                        </mat-select> -->
+
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-1-1 col-sm-1-3 col-md-1-3">
+                                        <mat-form-field class="fluid" appearance="outline">
+                                            <mat-label>Departamento</mat-label>
+                                            <mat-select formControlName="state">
+                                                <mat-option *ngFor="let dep of this.departaments" [value]="dep.id">
+                                                    {{dep.department_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <!-- <mat-select formControlName="state">
+                                            <mat-option [value]="'1'">
+                                                Guatemala
+                                            </mat-option>
+                                            <mat-option [value]="'2'">
+                                                Escuintla
+                                            </mat-option>
+                                            <mat-option [value]="'3'">
+                                                Jutiapa
+                                            </mat-option>
+                                        </mat-select> -->
+
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <mat-form-field class="fluid" appearance="outline">
+                                    <mat-label>Estado paciente</mat-label>
+                                    <mat-select formControlName="status">
+                                        <mat-option *ngFor="let dep of this.status" [value]="dep.id">
+                                            {{dep.status}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <!-- <mat-select formControlName="gender">
+                                    <mat-option [value]="'1'">
+                                        Masculino
+                                    </mat-option>
+                                    <mat-option [value]="'2'">
+                                        Femenino
+                                    </mat-option>
+                                    <mat-option [value]="'3'">
+                                        Indefinido
+                                    </mat-option>
+                                </mat-select> -->
+
+                                </mat-form-field>
+
+                                <div class="frow">
+                                    <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                        <mat-form-field appearance="outline" class="fluid">
+                                            <mat-label>Fecha contagio</mat-label>
+                                            <input matInput [matDatepicker]="contagionDate"
+                                                formControlName="contagionDate">
+                                            <mat-datepicker-toggle matSuffix [for]="contagionDate">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #contagionDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+                                        <mat-form-field appearance="outline" class="fluid">
+                                            <mat-label>Fecha recuperación</mat-label>
+                                            <input matInput [matDatepicker]="recoveryDate"
+                                                formControlName="recoveryDate">
+                                            <mat-datepicker-toggle matSuffix [for]="recoveryDate">
+                                            </mat-datepicker-toggle>
+                                            <mat-datepicker #recoveryDate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <mat-form-field class="fluid" appearance="outline">
+                                    <mat-label>Dirección</mat-label>
+                                    <input matInput formControlName="address">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" class="fluid">
+                                    <mat-label>Descripción del caso</mat-label>
+                                    <textarea matInput formControlName="description"></textarea>
+                                </mat-form-field>
+
+                                <button mat-raised-button color="primary" type="submit">Guardar</button>
+
+                                <!-- <label>
+                              First Name:
+                              <input type="text" formControlName="name">
+                            </label>
+                          
+                            <label>
+                              Last Name:
+                              <input type="text" formControlName="lastName">
+                            </label> -->
+
+                            </form>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div class="frow" *ngIf="(loader >= 0 && loader < 3) ||  loader == 4">
+            <div class="col-xs-1-1 col-sm-1-2 col-md-1-4">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+        </div>
+        <div class="frow" *ngIf="loader == -1">
+            <div class="col-xs-1-1 col-sm-1-2 col-md-1-4">
+                <p>Sin procesamiento de datos</p>
+            </div>
+        </div>
+    </div>
+</div>

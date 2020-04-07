@@ -1,30 +1,27 @@
 <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #drawer class="sidenav" fixedInViewport
-        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-        [mode]="(isHandset$ | async) ? 'side' :  'over'"
-        >
-      <mat-toolbar>Notificaciones</mat-toolbar>
-      <mat-divider></mat-divider>
-      <mat-nav-list>
-        <a mat-list-item href="#">Link 1</a>
-        <a mat-list-item href="#">Link 2</a>
-        <a mat-list-item href="#">Link 3</a>
-      </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <mat-toolbar class="bg-blue">
-        <button
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'side' :  'over'">
+    <mat-toolbar>Notificaciones</mat-toolbar>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <a mat-list-item href="#">Link 1</a>
+      <a mat-list-item href="#">Link 2</a>
+      <a mat-list-item href="#">Link 3</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content style="height: 100%;">
+    <mat-toolbar class="bg-blue-dark mat-elevation-z8">
+      <!-- <button
           type="button"
           aria-label="Toggle sidenav"
           mat-icon-button
           (click)="drawer.toggle()">
           <mat-icon aria-label="Side nav toggle icon" class="text-white">notifications_active</mat-icon>
-        </button>
-        <h2 class="text-white">Covid19 GT</h2>
-      </mat-toolbar>
-      <!-- Add Content Here -->
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-
-
+        </button> -->
+      <h2 class="text-white">Covid19 GT</h2>
+    </mat-toolbar>
+    
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

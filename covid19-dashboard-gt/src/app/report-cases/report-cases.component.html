@@ -1,3 +1,31 @@
+<mat-toolbar class="mat-elevation-z5">
+    <div class="section">
+        <div class="frow-container">
+            <div class="frow row-end">
+                <div class="col-sm-1-1 " style="text-align: right; padding: 1em;">
+                    <ul class="breadcrumb">
+                        <li class="active">
+                            <a routerLink="/" target="_blank">
+                                <span>
+                                    <mat-icon>dashboard</mat-icon>
+                                </span>
+                                <span>
+                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a routerLink="/report-cases">
+                                Casos reportados
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-toolbar>
+
 <div class="section">
     <div class="frow-container">
         <div style="text-align: center; align-items: center; ">
@@ -8,59 +36,62 @@
         </div>
         <div class="frow row-end">
             <div class="col-sm-1-1 " style="text-align: right; padding: 1em;">
-                <button mat-raised-button color="primary">Nuevo caso</button>
+                <a mat-raised-button color="primary" routerLink="/new-case">Nuevo caso</a>
             </div>
         </div>
-        <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <mat-progress-bar *ngIf="this.dataSource.data.length <= 0 && loader" mode="indeterminate"></mat-progress-bar>
+        <div [ngStyle]="{'display': (this.dataSource.data.length > 0) ? 'block': 'none'}">
+            <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombres</th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="gender">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Genero </th>
+                    <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+                </ng-container>
+                <ng-container matColumnDef="age">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Edad </th>
+                    <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.status}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="department_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Departamento </th>
+                    <td mat-cell *matCellDef="let element"> {{element.department_name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="fecha_contagio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Contagio </th>
+                    <td mat-cell *matCellDef="let element"> {{element.contagion_date}} </td>
+                </ng-container>
+                <ng-container matColumnDef="recovery_date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Recuperación </th>
+                    <td mat-cell *matCellDef="let element"> {{element.recovery_date}} </td>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> </th>
+                    <td mat-cell *matCellDef="let element">
+                        <a mat-icon-button aria-label="Editar caso" [routerLink]="['/new-case', element.id_case]">
+                            <mat-icon>edit</mat-icon>
+                        </a>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [ngStyle]="{'display': (this.dataSource.data.length > 0) ? 'block': 'none'}"
+                [pageSizeOptions]="[8, 16, 24]" showFirstLastButtons></mat-paginator>
 
-            <!--- Note that these columns can be defined in any order.
-                  The actual rendered columns are set as a property on the row definition" -->
+        </div>
 
-            <!-- Position Column -->
-            <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
-                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-            </ng-container>
-
-            <!-- Weight Column -->
-            <ng-container matColumnDef="weight">
-                <th mat-header-cell *matHeaderCellDef> Weight </th>
-                <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-            </ng-container>
-
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="symbol">
-                <th mat-header-cell *matHeaderCellDef> Symbol </th>
-                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-            </ng-container>
-            <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef> </th>
-                <td mat-cell *matCellDef="let element">
-                    <a mat-icon-button aria-label="Editar caso">
-                        <mat-icon >edit</mat-icon>
-                    </a>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-        <div class="frow">
+        <div class="frow" *ngIf="this.dataSource.data.length <= 0 && !loader">
             <div class="col-xs-1-1 col-sm-1-2 col-md-1-4">
-
+                <p>No hay datos a mostrar</p>
             </div>
-            <div class="col-xs-1-1 col-sm-1-2 col-md-1-4">
-
-            </div>
-
         </div>
     </div>
 </div>

@@ -3,7 +3,11 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-export interface PeriodicElement {
+import { CaseService } from '../services/case.service';
+import { Router } from '@angular/router';
+
+
+/* export interface PeriodicElement {
   name: string;
   position: number;
   weight: number;
@@ -22,6 +26,18 @@ const ELEMENT_DATA: PeriodicElement[] = [
   {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
   {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
 ];
+ */
+
+export class Case {
+  id: string;
+  name: string;
+  age: number;
+  status: string;
+  departament_name: string;
+  fecha_contagio: string;
+  recevory_date: string;
+  
+}
 
 @Component({
   selector: 'app-report-cases',
@@ -30,23 +46,47 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class ReportCasesComponent implements OnInit {
 
-  
+
 
 
   /* displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA; */
+  loader: boolean = true;
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol','action'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-  
+  displayedColumns: string[] = ['name', 'gender', 'status', 'department_name', 'fecha_contagio', 'recovery_date', 'action'];
+  dataSource = new MatTableDataSource<Case>();
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-  constructor() { }
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  constructor(
+    public router: Router,
+    private casesService: CaseService
+  ) { 
+    localStorage.setItem('caseEditable', null);
+  }
 
   ngOnInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.casesService.getCases().subscribe(response => {
+      if (response != null) {
+        if (response instanceof Array) {
+          if (response.length > 0) {
+            this.dataSource = new MatTableDataSource<Case>(response);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          }
+        }
+      }
+      this.loader = false;
+
+    }, err => {
+      this.loader = false;
+    });
+  }
+
+  gotoEditCase(frmCase: Case) {
+    localStorage.setItem('caseEditable', JSON.stringify(frmCase));
+    this.router.navigate(['new-case', frmCase.id || '']);
   }
 
 }

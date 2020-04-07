@@ -15,16 +15,20 @@ class DataLoadStatus {
   */
   geoChart: number;
   reportedCases: number;
+  accumulatedCasesPerDay: number;
   accumulatedCases: number;
   casesByGender: number;
   ageCases: number;
 
+
   constructor() {
     this.geoChart = 0;
     this.reportedCases = 0;
+    this.accumulatedCasesPerDay = 0;
     this.accumulatedCases = 0;
     this.casesByGender = 0;
     this.ageCases = 0;
+
   }
 }
 
@@ -48,7 +52,9 @@ export class HomeComponent implements OnInit {
   reportedCasesChart: ReportedCasesChart;
 
   geoChart: Chart;
+  accumulatedCasesPerDay: Chart;
   accumulatedCases: Chart;
+
   casesByGender: Chart;
   ageCases: Chart;
   date: string;
@@ -84,8 +90,6 @@ export class HomeComponent implements OnInit {
     let monthDay = date.toLocaleString('es-MX', { day: '2-digit', month: 'long' }).replace('.', '').replace('-', ' ');
     let weekDay = date.toLocaleString('es-MX', { weekday: 'long' }).replace('.', '');
     this.date = weekDay + ' ' + monthDay + ' ' + date.getFullYear();
-    /* console.log(monthDay);
-    console.log(weekDay); */
 
     //segundo: t.getSeconds() < 10 ? '0' + t.getSeconds() : t.getSeconds().toString()
 
@@ -116,9 +120,6 @@ export class HomeComponent implements OnInit {
     this.getDate();
     //this.loadResumenCases();
     this.dataLoadingStatus = new DataLoadStatus();
-
-
-
 
     this.dataChartsService.getDataGeo().subscribe(response => {
 
@@ -163,9 +164,7 @@ export class HomeComponent implements OnInit {
           this.reportedCasesChart = new ReportedCasesChart(response);
           this.dataLoadingStatus.reportedCases = 1;
         } else
-          this.dataLoadingStatus.reportedCases = 1;
-
-
+          this.dataLoadingStatus.reportedCases = 2;
       } else
         this.dataLoadingStatus.reportedCases = 2;
 
@@ -189,7 +188,8 @@ export class HomeComponent implements OnInit {
               legend: { position: 'bottom' },
               slices: {
                 0: { color: 'pink' },
-                1: { color: 'gray' }
+                1: { color: '#76A7FA' },
+                3: { color: 'gray' }
               }
             });
             this.dataLoadingStatus.casesByGender = 1;
@@ -208,20 +208,49 @@ export class HomeComponent implements OnInit {
     });
 
 
-    this.dataChartsService.getAccumulatedCases().subscribe(response => {
+    this.dataChartsService.getAccumulatedCasesPerDay().subscribe(response => {
       if (response != null) {
         if (response instanceof Array) {
           if (response.length > 0) {
             let arr = []
-            if (response.length > 0) {
               response.forEach(element => {
                 arr.push(Object.values(element));
               });
-            }
-            this.accumulatedCases = new Chart('Line', arr, ['Día', 'Confirmados'], {
+            this.accumulatedCasesPerDay = new Chart('Line', arr, ['Días', 'Confirmados'], {
               legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
             });
-            this.dataLoadingStatus.accumulatedCases = 1;
+            this.dataLoadingStatus.accumulatedCasesPerDay = 1;
+          } else
+            this.dataLoadingStatus.accumulatedCasesPerDay = 2;
+
+        } else
+          this.dataLoadingStatus.accumulatedCasesPerDay = 2;
+
+
+      } else
+        this.dataLoadingStatus.accumulatedCasesPerDay = 2;
+
+
+    }, err => {
+      this.dataLoadingStatus.accumulatedCasesPerDay = 2;
+    });
+
+
+
+    this.dataChartsService.getAccumulatedCases().subscribe(response => {
+      if (response != null) {
+        if (response instanceof Array) {
+          
+          if (response.length > 0) {
+            let arr = []
+              response.forEach(element => {
+                arr.push(Object.values(element));
+              });
+              this.accumulatedCases = new Chart('Line', arr, ['Días', 'Confirmados'], {
+                legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
+              });
+              this.dataLoadingStatus.accumulatedCases = 1;
+            
           } else
             this.dataLoadingStatus.accumulatedCases = 2;
 
@@ -237,40 +266,43 @@ export class HomeComponent implements OnInit {
       this.dataLoadingStatus.accumulatedCases = 2;
     });
 
-
     this.dataChartsService.getAgeCases().subscribe(response => {
       /* let arr = []
-      console.log(response);
       if (response.length > 0) {
         response.forEach(element => {
           arr.push(Object.values(element));
         });
       } */
+      //console.log(response);
       if (response != null) {
-        if (response instanceof Array) {
-          if (response.length > 0) {
-            this.ageCases = new Chart('Bar', response,
-              ['Edades', 'Hombre', 'Mujeres'], {
-              width: '100%',
-              height: '400px',
-              legend: { position: 'labeled', textStyle: { color: 'blue', fontSize: 16 } },
-              pieSliceText: 'label',
-              colors: ['gray', 'pink'],
-              chartArea: {
-                height: '200',
-                width: '100%'
+        if (response instanceof Object) {
+          if (response.data) {
+            if (response.data instanceof Array) {
+              if (response.data.length > 0) {
+                this.ageCases = new Chart('Bar', response.data,
+                  response.bars, {
+                  width: '100%',
+                  height: '400px',
+                  legend: { position: 'labeled', textStyle: { color: 'blue', fontSize: 16 } },
+                  pieSliceText: 'label',
+                  colors: response.color,
+                  chartArea: {
+                    height: '200',
+                    width: '100%'
+                  }
+                });
+                this.dataLoadingStatus.ageCases = 1;
               }
-            });
-            this.dataLoadingStatus.ageCases = 1;
-          }
-          else
+              else
+                this.dataLoadingStatus.ageCases = 2;
+            } else
+              this.dataLoadingStatus.ageCases = 2;
+          } else
             this.dataLoadingStatus.ageCases = 2;
-
         } else
           this.dataLoadingStatus.ageCases = 2;
-
       } else
-        this.dataLoadingStatus.ageCases = 1;
+        this.dataLoadingStatus.ageCases = 2;
     }, err => {
       this.dataLoadingStatus.ageCases = 2;
     });

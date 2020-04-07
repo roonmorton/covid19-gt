@@ -27,13 +27,20 @@ export class DataChartService {
     return this.http.get<any>(this.api.getCasesByGender());
   }
 
+  getAccumulatedCasesPerDay(): Observable<any>{
+    return this.http.get<any>(this.api.getAccumulatedCasesPerDay());
+  }
+ 
   getAccumulatedCases(): Observable<any>{
     return this.http.get<any>(this.api.getAccumulatedCases());
   }
- 
   
   getAgeCases(): Observable<any>{
     return this.http.get<any>(this.api.getAgeCases());
+  }
+
+  getCases(): Observable<any>{
+    return this.http.get<any>(this.api.getCases());
   }
 }
 

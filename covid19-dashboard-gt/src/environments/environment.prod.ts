@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl : "http://6eb412f9.ngrok.io"
+  apiUrl : "https://www.api.covid-19.esdavila.com.gt"
+  //apiUrl : "localhost:3001"
+
 };

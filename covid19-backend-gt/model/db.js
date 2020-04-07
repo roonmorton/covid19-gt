@@ -3,12 +3,12 @@
 var mysql = require('mysql');
 
 var dbconfig = {
-    host: '',
-    port: '3306',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
     connectionLimit: 10,
-    user: '',
-    password: '',
-    database: ''
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_SCHEMA
 };
 
 

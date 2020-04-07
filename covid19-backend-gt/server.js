@@ -6,9 +6,14 @@ const express = require('express'),
     socketio = require('socket.io'),
     mysql = require('mysql'),
     port = process.env.PORT || 3001;
+if (process.env.NODE_ENV !== 'production') {
+    const dotenv = require('dotenv');
+    dotenv.config();
+}
+
 
 var corsOptions = {
-    origin: '*',
+    origin: process.env.CORS || '*',
     credentials: true,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }

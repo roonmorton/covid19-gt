@@ -44,7 +44,8 @@ export class NewCaseComponent implements OnInit {
       Validators.required), // Departamento
     address: new FormControl(''),
     description: new FormControl(''),
-    contagionDate: new FormControl(''),
+    contagionDate: new FormControl('',
+    Validators.required),
     recoveryDate: new FormControl(''),
     idPerson: new FormControl('')
   });

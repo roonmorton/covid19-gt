@@ -187,8 +187,8 @@ export class HomeComponent implements OnInit {
             this.casesByGender = new Chart('PieChart', arr, [], {
               legend: { position: 'bottom' },
               slices: {
-                0: { color: '#76A7FA' },
-                1: { color: 'pink' },
+                0: { color: 'pink' },
+                1: { color: '#76A7FA' },
                 3: { color: 'gray' }
               }
             });

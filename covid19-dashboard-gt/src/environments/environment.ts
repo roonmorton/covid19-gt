@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl : "https://www.api.covid-19.esdavila.com.gt"
-  //apiUrl : "http://b9bee45b.ngrok.io" 
+  //apiUrl : "https://www.api.covid-19.esdavila.com.gt"
+  apiUrl : "http://b9bee45b.ngrok.io" 
 
 };
 

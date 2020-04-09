@@ -214,7 +214,9 @@
                             <div class="content" style="text-align: center;"
                                 *ngIf="this.dataLoadingStatus.accumulatedCasesPerDay == 1 && accumulatedCasesPerDay ">
                                 <google-chart style="width: 100%; " [type]="accumulatedCasesPerDay.type" [data]="accumulatedCasesPerDay.data"
-                                    [columnNames]="accumulatedCasesPerDay.columnNames" [options]="accumulatedCasesPerDay.options">
+                                    [columnNames]="accumulatedCasesPerDay.columnNames" [options]="accumulatedCasesPerDay.options"
+                                    [roles]="[{ role: 'annotation', type: 'string', index: 2 }]"
+                                    >
                                 </google-chart>
                             </div>
                             <div *ngIf="this.dataLoadingStatus.accumulatedCasesPerDay == 2 " style="text-align: center;">
@@ -287,9 +289,40 @@
                             <div class="content" style="text-align: center;"
                                 *ngIf="this.dataLoadingStatus.accumulatedCases == 1 && accumulatedCases ">
                                 <google-chart style="width: 100%; " [type]="accumulatedCases.type" [data]="accumulatedCases.data"
-                                    [columnNames]="accumulatedCases.columnNames" [options]="accumulatedCases.options">
+                                    [columnNames]="accumulatedCases.columnNames" [options]="accumulatedCases.options"
+                                    [roles]="[{ role: 'annotation', type: 'string', index: 2 }]"
+                                    >
                                 </google-chart>
                             </div>
+                            <div *ngIf="this.dataLoadingStatus.accumulatedCases == 2 " style="text-align: center;">
+                                <p>No data</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1" style="padding-top: 2rem;">
+                <div class="my-card">
+                    <mat-card class="mat-elevation-z8">
+                        <mat-card-header class="bg-red-light">
+                            <mat-card-title class="text-white">Confirmados (acumulados)</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: 1.5em!important;">
+                            <div *ngIf="this.dataLoadingStatus.accumulatedCases == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <!-- <div class="content" style="text-align: center;"
+                                *ngIf="this.dataLoadingStatus.accumulatedCases == 1 && accumulatedCases ">
+                                <google-chart style="width: 100%; " [type]="accumulatedCases.type" [data]="accumulatedCases.data"
+                                    [columnNames]="accumulatedCases.columnNames" [options]="accumulatedCases.options">
+                                </google-chart>
+                            </div> -->
                             <div *ngIf="this.dataLoadingStatus.accumulatedCases == 2 " style="text-align: center;">
                                 <p>No data</p>
                             </div>

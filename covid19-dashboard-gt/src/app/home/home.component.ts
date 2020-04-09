@@ -214,10 +214,12 @@ export class HomeComponent implements OnInit {
           if (response.length > 0) {
             let arr = []
               response.forEach(element => {
-                arr.push(Object.values(element));
+                let ele = Object.values(element);
+                ele.push(ele[1].toString());
+                arr.push(ele);
               });
-            this.accumulatedCasesPerDay = new Chart('Line', arr, ['Días', 'Confirmados'], {
-              legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
+            this.accumulatedCasesPerDay = new Chart('AreaChart', arr, ['Días', 'Confirmados'], {
+              legend: { position: 'none', textStyle: { color: '#212121', fontSize: 16 } },
             });
             this.dataLoadingStatus.accumulatedCasesPerDay = 1;
           } else
@@ -242,16 +244,17 @@ export class HomeComponent implements OnInit {
         if (response instanceof Array) {
           
           if (response.length > 0) {
-            let arr = []
-            arr.push(['','', { role: 'style' }]);
+            let arr = [];
               response.forEach(element => {
                 let values = Object.values(element);
                 values.push(Object.values(element)[1].toString());
                 arr.push(values);
               });
-              console.log(arr);
-              this.accumulatedCases = new Chart('ColumnChart', arr, ['Días', 'Confirmados'], {
-                legend: { position: 'none', textStyle: { color: '#1f2227', fontSize: 16 } },
+              console.log(JSON.stringify(arr));
+              this.accumulatedCases = new Chart('AreaChart', arr, ['Días', 'Confirmados'], {
+                colors: ['#1f2227'],
+                legend: 'bottom',
+                //legend: { position: 'none', textStyle: { color: '#1f2227', fontSize: 16 } },
               });
               this.dataLoadingStatus.accumulatedCases = 1;
             
@@ -283,12 +286,16 @@ export class HomeComponent implements OnInit {
           if (response.data) {
             if (response.data instanceof Array) {
               if (response.data.length > 0) {
+                //console.log(response.data);
                 this.ageCases = new Chart('Bar', response.data,
                   response.bars, {
                   width: '100%',
                   height: '400px',
-                  legend: { position: 'labeled', textStyle: { color: 'blue', fontSize: 16 } },
-                  pieSliceText: 'label',
+                  //legend: 'top',
+                  legend: 'none',
+                 // legend: {position: 'top', maxLines: 3},
+                  //legend: { position: 'bottom', textStyle: { color: 'blue', fontSize: 16 } },
+                  //pieSliceText: 'label',
                   colors: response.color,
                   chartArea: {
                     height: '200',

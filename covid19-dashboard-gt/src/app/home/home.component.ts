@@ -1,10 +1,11 @@
 import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
 import { DataChartService } from '../services/data-chart.service';
 import { GoogleChartComponent, ChartErrorEvent } from 'angular-google-charts';
-import { Chart } from '../models/ChartModel';
+import { MyChart } from '../models/ChartModel';
 import { ReportedCases, ReportedCasesChart } from '../models/ReportedCasesModel';
 
 
+import * as Chart from 'chart.js'
 
 
 class DataLoadStatus {
@@ -51,12 +52,12 @@ export class HomeComponent implements OnInit {
   reportedCases: ReportedCases;
   reportedCasesChart: ReportedCasesChart;
 
-  geoChart: Chart;
-  accumulatedCasesPerDay: Chart;
-  accumulatedCases: Chart;
+  geoChart: MyChart;
+  accumulatedCasesPerDay: MyChart;
+  accumulatedCases: MyChart;
 
-  casesByGender: Chart;
-  ageCases: Chart;
+  casesByGender: MyChart;
+  ageCases: MyChart;
   date: string;
 
 
@@ -132,7 +133,7 @@ export class HomeComponent implements OnInit {
                 arr.push(Object.values(element));
               });
             }
-            this.geoChart = new Chart("GeoChart", arr, ['Departamento', 'Total', 'Infectados'], {
+            this.geoChart = new MyChart("GeoChart", arr, ['Departamento', 'Total', 'Infectados'], {
               region: 'GT',
               displayMode: 'markers',
               colorAxis: { colors: ['red', 'orange'] },
@@ -184,7 +185,7 @@ export class HomeComponent implements OnInit {
                 arr.push(Object.values(element));
               });
             }
-            this.casesByGender = new Chart('PieChart', arr, [], {
+            this.casesByGender = new MyChart('PieChart', arr, [], {
               legend: { position: 'bottom' },
               slices: {
                 0: { color: 'pink' },
@@ -213,10 +214,10 @@ export class HomeComponent implements OnInit {
         if (response instanceof Array) {
           if (response.length > 0) {
             let arr = []
-              response.forEach(element => {
-                arr.push(Object.values(element));
-              });
-            this.accumulatedCasesPerDay = new Chart('Line', arr, ['Días', 'Confirmados'], {
+            response.forEach(element => {
+              arr.push(Object.values(element));
+            });
+            this.accumulatedCasesPerDay = new MyChart('Line', arr, ['Días', 'Confirmados'], {
               legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
             });
             this.dataLoadingStatus.accumulatedCasesPerDay = 1;
@@ -240,19 +241,125 @@ export class HomeComponent implements OnInit {
     this.dataChartsService.getAccumulatedCases().subscribe(response => {
       if (response != null) {
         if (response instanceof Array) {
-          
+
           if (response.length > 0) {
-            let arr = []
-            arr.push(['','', { role: 'style' }]);
-              response.forEach(element => {
-                arr.push(Object.values(element));
-              });
-              console.log(arr);
-              this.accumulatedCases = new Chart('ColumnChart', arr, ['Días', 'Confirmados'], {
-                legend: { position: 'none', textStyle: { color: '#1f2227', fontSize: 16 } },
-              });
-              this.dataLoadingStatus.accumulatedCases = 1;
-            
+            console.log(response);
+            let arrLevels = [];
+            let arrData = [];
+            let arr = [];
+            response.forEach(item => {
+              arrLevels.push(item.dia);
+              arrData.push(item.num_casos_acum);
+              //item.x = Number(item.dia);
+              /* item.y = item.num_casos_acum;
+              delete item.dia;
+              delete item.num_casos_acum;
+              return item; */
+              let ele = Object.values(item);
+              ele.push(ele[1].toString());
+              arr.push(ele);
+            });
+            /* console.log(response);
+            //console.log(arr);
+            response.forEach(element => {
+              let ele = Object.values(element);
+              ele.push(ele[1].toString());
+              arr.push(ele);
+            }); */
+            this.accumulatedCases = new MyChart('AreaChart', arr, ['Días', 'Confirmados'], {
+              legend: { position: 'none', textStyle: { color: 'blue', fontSize: 16 } },
+            });
+            this.canvas = document.getElementById('myChart');
+            this.ctx = this.canvas.getContext('2d');
+            let myChart = new Chart(this.ctx, {
+              type: 'line',
+              data: {
+                labels: arrLevels,
+                datasets: [{
+                  label: "Casos acumulados",
+                  data: arrData,
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  //lineTension: 0,
+                  //fill: false,
+                  //borderColor: 'orange',
+                  //backgroundColor: 'rgba(20, 51, 224, 0.26)',
+                  //borderDash: [5, 5],
+                  //pointBorderColor: 'orange',
+                  //pointBackgroundColor: 'rgba(255,150,0,0.5)',
+                  //pointRadius: 5,
+                  //pointHoverRadius: 10,
+                  //pointHitRadius: 30,
+                  //pointBorderWidth: 2,
+                  //pointStyle: 'rectRounded'
+                }]
+              },
+              options: {
+                scales: {
+                  yAxes: [{
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Casos'
+                    }
+                  }],
+                  xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Dias'
+                    }
+                  }]
+                },
+                responsive: true,
+                display: true,
+                responsiveAnimationDuration: 100,
+                maintainAspectRatio: false,
+
+                events: false,
+                tooltips: {
+                  enabled: true
+                },
+                hover: {
+                  animationDuration: 0
+                },
+                animation: {
+                  duration: 0,
+                  onComplete: function () {
+                    // render the value of the chart above the bar
+                    var ctx = this.chart.ctx;
+                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+                    ctx.fillStyle = this.chart.config.options.defaultFontColor;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    this.data.datasets.forEach(function (dataset) {
+                      for (var i = 0; i < dataset.data.length; i++) {
+                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+                        ctx.fillText(dataset.data[i], model.x, model.y - 5);
+                      }
+                    });
+                  }
+                }
+                /*                 animation: {
+                                  duration: 0,
+                                  onComplete: function () {
+                                    // render the value of the chart above the bar
+                                    var ctx = this.chart.ctx;
+                                    ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, 'normal', Chart.defaults.global.defaultFontFamily);
+                                    ctx.fillStyle = this.chart.config.options.defaultFontColor;
+                                    ctx.textAlign = 'center';
+                                    ctx.textBaseline = 'bottom';
+                                    this.data.datasets.forEach(function (dataset) {
+                                      for (var i = 0; i < dataset.data.length; i++) {
+                                        var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model;
+                                        ctx.fillText(dataset.data[i], model.x, model.y - 5);
+                                      }
+                                    });
+                                  }
+                                } */
+              }
+            });
+            this.dataLoadingStatus.accumulatedCases = 1;
+
           } else
             this.dataLoadingStatus.accumulatedCases = 2;
 
@@ -281,8 +388,9 @@ export class HomeComponent implements OnInit {
           if (response.data) {
             if (response.data instanceof Array) {
               if (response.data.length > 0) {
-                this.ageCases = new Chart('Bar', response.data,
-                  response.bars, {
+                console.log(response);
+                this.ageCases = new MyChart('Bar', response.data,
+                  ["Edades", "Masculino", "Femenino"], {
                   width: '100%',
                   height: '400px',
                   legend: { position: 'labeled', textStyle: { color: 'blue', fontSize: 16 } },
@@ -308,6 +416,63 @@ export class HomeComponent implements OnInit {
     }, err => {
       this.dataLoadingStatus.ageCases = 2;
     });
+
+  }
+
+
+
+
+  title = 'angular8chartjs';
+  canvas: any;
+  ctx: any;
+  ngAfterViewInit() {
+    /* this.canvas = document.getElementById('myChart');
+    this.ctx = this.canvas.getContext('2d');
+    let myChart = new Chart(this.ctx, {
+      type: 'line',
+      data:{
+        datasets: [{
+            label: 'Casos acumulados',
+            data: [{
+                x: -10,
+                y: 0
+            }, {
+                x: 0,
+                y: 10
+            }, {
+                x: 10,
+                y: 5
+            }]
+        }]
+    },
+      options: {
+        responsive: true,
+        display: true,
+        aspectRatio: 1,
+        responsiveAnimationDuration:100,
+        maintainAspectRatio: true
+      }
+    }); *//* new Chart(this.ctx, {
+      type: 'pie',
+      data: {
+          labels: ["New", "In Progress", "On Hold"],
+          datasets: [{
+              label: '# of Votes',
+              data: [1,2,3],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+        responsive: true,
+        display:true
+      }
+    }); */
+
 
   }
 

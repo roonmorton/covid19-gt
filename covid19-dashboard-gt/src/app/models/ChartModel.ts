@@ -1,4 +1,4 @@
-export class Chart{
+export class MyChart{
     title: string;
     type: string;
     data: Array<Array<any>>;

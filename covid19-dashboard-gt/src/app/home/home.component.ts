@@ -246,9 +246,7 @@ export class HomeComponent implements OnInit {
           if (response.length > 0) {
             let arr = [];
               response.forEach(element => {
-                let values = Object.values(element);
-                values.push(Object.values(element)[1].toString());
-                arr.push(values);
+                arr.push(Object.values(element));
               });
               console.log(JSON.stringify(arr));
               this.accumulatedCases = new Chart('AreaChart', arr, ['Días', 'Confirmados'], {

@@ -200,7 +200,7 @@
                 </div>
             </div>
         </div>
-        <div class="frow">
+        <!-- <div class="frow">
             <div class="col-xs-1-1 col-sm-1-1 col-md-1-2 col-lg-1-2" style="padding-top: 2rem;">
                 <div class="my-card">
                     <mat-card class="mat-elevation-z8">
@@ -250,8 +250,8 @@
                     </mat-card>
                 </div>
             </div>
-        </div>
-        <div class="frow">
+        </div> -->
+        <!-- <div class="frow">
             <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1" style="padding-top: 2rem;">
                 <div class="my-card">
                     <mat-card class="mat-elevation-z8">
@@ -275,8 +275,8 @@
                     </mat-card>
                 </div>
             </div>
-        </div>
-<!--         <div class="frow">
+        </div> -->
+        <!--         <div class="frow">
             <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1" style="padding-top: 2rem;">
                 <div class="my-card">
                     <mat-card class="mat-elevation-z8">
@@ -303,20 +303,158 @@
                 </div>
             </div>
         </div> -->
+
+
+    </div>
+</section>
+
+<section class="mat-typography" style="padding: 3.5em 0;">
+    <div class="frow-container">
         <div class="frow">
-            <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1" style="padding-top: 2rem;">
-                <div *ngIf="this.dataLoadingStatus.accumulatedCases == 0">
-                    <mat-progress-bar mode="query"></mat-progress-bar>
-                </div>
-                
-                <div class="chart-container">
-                    <canvas id="myChart" width="600" height="250"></canvas>
-                </div>
-                <div *ngIf="this.dataLoadingStatus.accumulatedCases == 2 " style="text-align: center;">
-                    <p>No data</p>
-                </div>
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-2 col-lg-1-1">
+                <h2 class="mat-h2">Casos confirmados por genero</h2>
+                <mat-card class="mat-elevation-z8">
+                    <div *ngIf="dataLoadingStatus.casesByGender == 0">
+                        <mat-progress-bar mode="query"></mat-progress-bar>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="chartCasesByGender" width="100%" height="325"></canvas>
+                    </div>
+                    <!-- <div *ngIf="dataLoadingStatus.casesByGender == 1 && casesByGender " class="content"
+                        style="text-align: center;">
+                        <google-chart style="width: 100%; " [type]="casesByGender.type"
+                            [data]="casesByGender.data" [options]="casesByGender.options">
+                        </google-chart>
+                    </div> -->
+                    <div *ngIf="dataLoadingStatus.casesByGender == 2 " style="text-align: center;">
+                        <p>No data</p>
+                    </div>
+                </mat-card>
             </div>
         </div>
+    </div>
+</section>
+<mat-divider></mat-divider>
 
+<section class="mat-typography" style="padding: 3.5em 0;">
+    <div class="frow-container">
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-2 col-lg-1-1">
+                <h2 class="mat-h2">Casos confirmados por día</h2>
+                <mat-card class="mat-elevation-z8">
+                    <!-- <mat-card-header class="bg-light">
+                            <mat-card-title class="">Confirmados por día</mat-card-title>
+                        </mat-card-header> -->
+                    <mat-card-content style="text-align: center; padding: 1.5em!important;">
+                        <div *ngIf="this.dataLoadingStatus.accumulatedCasesPerDay == 0">
+                            <mat-progress-bar mode="query"></mat-progress-bar>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartAccumulatedCasesPerDay" width="100%" height="325"></canvas>
+                        </div>
+                        <!-- <div class="content" style="text-align: center;"
+                                *ngIf="this.dataLoadingStatus.accumulatedCasesPerDay == 1 && accumulatedCasesPerDay ">
+                                <google-chart style="width: 100%; " [type]="accumulatedCasesPerDay.type"
+                                    [data]="accumulatedCasesPerDay.data"
+                                    [columnNames]="accumulatedCasesPerDay.columnNames"
+                                    [options]="accumulatedCasesPerDay.options">
+                                </google-chart>
+                            </div> -->
+                        <div *ngIf="this.dataLoadingStatus.accumulatedCasesPerDay == 2 " style="text-align: center;">
+                            <p>No data</p>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <!-- <div class="col-xs-1-1 col-sm-1-1 col-md-1-2 col-lg-1-2" style="padding-top: 2rem;">
+                <div class="my-card">
+                    <mat-card class="mat-elevation-z8">
+                        <mat-card-header class="bg-light">
+                            <mat-card-title class="">Confirmados segun sexo</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content style="text-align: center; padding: 1.5em!important;">
+                            <div *ngIf="dataLoadingStatus.casesByGender == 0">
+                                <mat-progress-bar mode="query"></mat-progress-bar>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.casesByGender == 1 && casesByGender " class="content"
+                                style="text-align: center;">
+                                <google-chart style="width: 100%; " [type]="casesByGender.type"
+                                    [data]="casesByGender.data" [options]="casesByGender.options">
+                                </google-chart>
+                            </div>
+                            <div *ngIf="dataLoadingStatus.casesByGender == 2 " style="text-align: center;">
+                                <p>No data</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</section>
+
+<mat-divider></mat-divider>
+
+<section class="mat-typography" style="padding: 3.5em 0;">
+    <div class="frow-container">
+
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1">
+                <h2 class="mat-h2">Casos segun edades y genero</h2>
+                <mat-card class="mat-elevation-z8" style="padding: 24px 5px;">
+                    <!-- <mat-card-header class="bg-red-light">
+                        <mat-card-title class="text-white">Confirmados (acumulados)</mat-card-title>
+                    </mat-card-header> -->
+                    <mat-card-content>
+                        <div style="padding: 1.5em;" *ngIf="dataLoadingStatus.ageCases == 0">
+                            <mat-progress-bar mode="query"></mat-progress-bar>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartAgeCases" width="100%" height="325"></canvas>
+                        </div>
+                        <!-- <div *ngIf="dataLoadingStatus.ageCases == 1 && ageCases" class="content"
+                            style="text-align: center;">
+                            <google-chart style=" width: 100%;" [type]="ageCases.type" [data]="ageCases.data"
+                                [columnNames]="ageCases.columnNames" [options]="ageCases.options">
+                            </google-chart>
+                        </div> -->
+                        <div *ngIf="dataLoadingStatus.ageCases == 2">
+                            <p>No data</p>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</section>
+<mat-divider></mat-divider>
+
+<section class="mat-typography" style="padding: 3.5em 0;">
+    <div class="frow-container">
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1">
+                <h2 class="mat-h2">Casos acumulados por día</h2>
+                <mat-card class="mat-elevation-z8" style="padding: 24px 5px;">
+                    <!-- <mat-card-header class="bg-red-light">
+                        <mat-card-title class="text-white">Confirmados (acumulados)</mat-card-title>
+                    </mat-card-header> -->
+                    <mat-card-content>
+                        <div style="padding: 1.5em;" *ngIf="this.dataLoadingStatus.accumulatedCases == 0">
+                            <mat-progress-bar mode="query"></mat-progress-bar>
+                        </div>
+
+                        <!-- <div class="chart-container" [ngStyle]="{'display': dataLoadingStatus.accumulatedCases == 1 ? 'block': 'none'}">
+ -->
+                        <div class="chart-container">
+                            <canvas id="chartAccumulatedCases" width="100%" height="325"></canvas>
+                        </div>
+                        <div *ngIf="this.dataLoadingStatus.accumulatedCases == 2 " style="text-align: center;">
+                            <p>No data</p>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
     </div>
 </section>

@@ -25,10 +25,10 @@ var ParseInsert = function (InsertCase) {
 Municipios.getStatsMuni = function (result) {
     sql.query("SELECT IFNULL(TD.nombre_departamento,'Total') as department_name, (SELECT count(id_departamento) FROM tbl_casos TCD) as total,count(TC.id_caso) as total_departaments FROM tbl_departamentos TD INNER JOIN tbl_casos TC ON TC.id_departamento=TD.id_departamento GROUP BY TD.nombre_departamento", function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('tasks : ', res);
+            //console.log('tasks : ', res);
             result(null, res);
         }
     });
@@ -37,10 +37,10 @@ Municipios.getStatsMuni = function (result) {
 Municipios.getStatsPacients = function (result) {
     sql.query("SELECT(SELECT count(id_departamento) FROM tbl_casos TCD) as totalcases, count(case when TC.id_estado=12 then 1 else null end) as deceased, count(case when TC.id_estado=11 then 1 else null end) as recovered,count(case when TC.id_estado=9 then 1 else null end) as unknown FROM tbl_casos TC", function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('tasks : ', res);
+            //console.log('tasks : ', res);
 
             result(null, res);
         }
@@ -48,12 +48,24 @@ Municipios.getStatsPacients = function (result) {
 };
 
 Municipios.getStatsGender = function (result) {
-    sql.query("SELECT TG.nombre_genero as gender, COUNT(TG.id_genero)as count FROM tbl_casos TC INNER JOIN tbl_personas TP ON TP.id_persona=TC.id_persona INNER JOIN tbl_generos TG ON TP.id_genero=TG.id_genero GROUP BY TG.nombre_genero", function (err, res) {
+    //sql.query("SELECT TG.nombre_genero as gender, COUNT(TG.id_genero)as count FROM tbl_casos TC INNER JOIN tbl_personas TP ON TP.id_persona=TC.id_persona INNER JOIN tbl_generos TG ON TP.id_genero=TG.id_genero GROUP BY TG.nombre_genero", function (err, res) {
+        sql.query(`
+        SELECT 
+        TG.nombre_genero as gender, 
+        TG.color,
+        COUNT(TG.id_genero)as count 
+        FROM tbl_casos TC 
+        INNER JOIN tbl_personas TP 
+        ON TP.id_persona=TC.id_persona 
+        INNER JOIN tbl_generos TG 
+        ON TP.id_genero=TG.id_genero 
+        GROUP BY TG.nombre_genero
+        `, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
@@ -61,24 +73,78 @@ Municipios.getStatsGender = function (result) {
 
 
 Municipios.getStatsByMonth = function (result) {
-    sql.query("select DATE_FORMAT(tab.fecha,'%d') as days,count(tab.id_caso) as casesofday from(select a.Date fecha,TC.id_caso from ( select date(last_day(CAST(DATE_FORMAT(NOW() ,'%Y-%m-%d') as DATE)) - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY) as Date from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c) a left JOIN tbl_casos TC ON date(TC.fecha_contagio)=a.Date WHERE a.Date between CAST(DATE_FORMAT(DATE_SUB(NOW(), interval 1 month) ,'%Y-%m-01') as DATE) and (CAST(DATE_FORMAT(DATE_SUB(NOW(), interval 2 hour) ,'%Y-%m-%d') as DATE)) order by a.Date ) tab group by fecha", function (err, res) {
-        if (err) {
-            console.log("error: ", err);
+    //sql.query("select DATE_FORMAT(tab.fecha,'%d') as days,count(tab.id_caso) as casesofday from(select a.Date fecha,TC.id_caso from ( select date(last_day(CAST(DATE_FORMAT(NOW() ,'%Y-%m-%d') as DATE)) - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY) as Date from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c) a left JOIN tbl_casos TC ON date(TC.fecha_contagio)=a.Date WHERE a.Date between CAST(DATE_FORMAT(DATE_SUB(NOW(), interval 1 month) ,'%Y-%m-01') as DATE) and (CAST(DATE_FORMAT(DATE_SUB(NOW(), interval 2 hour) ,'%Y-%m-%d') as DATE)) order by a.Date ) tab group by fecha", function (err, res) {
+        sql.query(
+            `
+        (SELECT 
+        CASE 
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 1 THEN "Enero"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 2 THEN "Febrero"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 3 THEN "Marzo"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 4 THEN "Abril"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 5 THEN "Mayo"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 6 THEN "Junio"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 7 THEN "Julio"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 8 THEN "Agosto"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 9 THEN "Septiembre"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 10 THEN "Octubre"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 11 THEN "Noviembre"
+            WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 12 THEN "Diciembre"
+        END as dia, COUNT(c.fecha_contagio) as num_casos_acum 
+        FROM tbl_casos as c
+        WHERE c.fecha_contagio < SUBDATE(CURDATE(), DAYOFMONTH(CURDATE()) - 1)
+        GROUP BY MONTH(c.fecha_contagio)
+        ORDER BY c.fecha_contagio ASC)
+        UNION ALL  
+        (SELECT DATE_FORMAT(Calendar,'%d-%m') as dia, COUNT(caso.fecha_contagio) AS num_casos_acum FROM 
+        (
+            SELECT @tmpdate := DATE_ADD(@tmpdate, INTERVAL 1 DAY) Calendar
+            FROM 
+            (SELECT @tmpdate := LAST_DAY(DATE_SUB(CURDATE(),INTERVAL 1 MONTH))) AS dinamico, tbl_casos
+        ) AS Calendar
+        LEFT JOIN tbl_casos caso 
+        ON DATE(caso.fecha_contagio) = Calendar
+        WHERE Calendar BETWEEN LAST_DAY(DATE_SUB(CURDATE(),INTERVAL 1 MONTH)) AND NOW()
+        GROUP BY Calendar)
+        `
+            , function (err, res) {
+    if (err) {
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
 };
 
 Municipios.getByGenderAge = function (result) {
-    sql.query("SELECT TG.nombre_genero as bars,(case  when TG.id_genero=5 then 'pink'  when TG.id_genero=6 then '#76A7FA'  when TG.id_genero=7 then 'gray' end) as color,count(case when TP.edad>0 and TP.edad<11 then 1 else null end) as '0-10', count(case when TP.edad>10 and TP.edad<21 then 1 else null end) as '11-20', count(case when TP.edad>20 and TP.edad<31 then 1 else null end) as '21-30', count(case when TP.edad>30 and TP.edad<41 then 1 else null end) as '31-40', count(case when TP.edad>40 and TP.edad<51 then 1 else null end) as '41-50', count(case when TP.edad>50 and TP.edad<61 then 1 else null end) as '51-60', count(case when TP.edad>60 and TP.edad<71 then 1 else null end) as '61-70', count(case when TP.edad>70 and TP.edad<81 then 1 else null end) as '71-80', count(case when TP.edad>80 and TP.edad<91 then 1 else null end) as '81-90', count(case when TP.edad>90 then 1 else null end) as 'mas de 90' FROM tbl_personas TP INNER JOIN tbl_generos TG ON TP.id_genero=TG.id_genero INNER JOIN tbl_casos TC ON TC.id_persona=TP.id_persona GROUP BY TG.nombre_genero ORDER BY TG.nombre_genero desc", function (err, res) {
-        if (err) {
-            console.log("error: ", err);
+    //sql.query("SELECT TG.nombre_genero as bars,(case  when TG.id_genero=5 then 'pink'  when TG.id_genero=6 then '#76A7FA'  when TG.id_genero=7 then 'gray' end) as color,count(case when TP.edad>0 and TP.edad<11 then 1 else null end) as '0-10', count(case when TP.edad>10 and TP.edad<21 then 1 else null end) as '11-20', count(case when TP.edad>20 and TP.edad<31 then 1 else null end) as '21-30', count(case when TP.edad>30 and TP.edad<41 then 1 else null end) as '31-40', count(case when TP.edad>40 and TP.edad<51 then 1 else null end) as '41-50', count(case when TP.edad>50 and TP.edad<61 then 1 else null end) as '51-60', count(case when TP.edad>60 and TP.edad<71 then 1 else null end) as '61-70', count(case when TP.edad>70 and TP.edad<81 then 1 else null end) as '71-80', count(case when TP.edad>80 and TP.edad<91 then 1 else null end) as '81-90', count(case when TP.edad>90 then 1 else null end) as 'mas de 90' FROM tbl_personas TP INNER JOIN tbl_generos TG ON TP.id_genero=TG.id_genero INNER JOIN tbl_casos TC ON TC.id_persona=TP.id_persona GROUP BY TG.nombre_genero ORDER BY TG.nombre_genero desc", function (err, res) {
+        sql.query(
+            `SELECT 
+            TG.nombre_genero as gender, TG.color as color,
+            count(case when TP.edad>0 and TP.edad<11 then 1 else null end) as '0-10', 
+            count(case when TP.edad>10 and TP.edad<21 then 1 else null end) as '11-20', 
+            count(case when TP.edad>20 and TP.edad<31 then 1 else null end) as '21-30', 
+            count(case when TP.edad>30 and TP.edad<41 then 1 else null end) as '31-40', 
+            count(case when TP.edad>40 and TP.edad<51 then 1 else null end) as '41-50', 
+            count(case when TP.edad>50 and TP.edad<61 then 1 else null end) as '51-60', 
+            count(case when TP.edad>60 and TP.edad<71 then 1 else null end) as '61-70', 
+            count(case when TP.edad>70 and TP.edad<81 then 1 else null end) as '71-80', 
+            count(case when TP.edad>80 and TP.edad<91 then 1 else null end) as '81-90', 
+            count(case when TP.edad>90 then 1 else null end) as 'mas de 90' 
+            FROM tbl_personas TP 
+            INNER JOIN tbl_generos TG ON TP.id_genero=TG.id_genero 
+            INNER JOIN tbl_casos TC ON TC.id_persona=TP.id_persona 
+            GROUP BY TG.nombre_genero ORDER BY TG.nombre_genero desc
+            
+            `, function (err, res) {
+      
+    if (err) {
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
@@ -86,12 +152,49 @@ Municipios.getByGenderAge = function (result) {
 
 
 Municipios.getByAcumCases = function (result) {
-    sql.query("select DATE_FORMAT(tab.fecha,'%d') as dia,(select count(TCT.id_caso) from tbl_casos TCT where date(TCT.fecha_contagio)<=tab.fecha) as num_casos_acum from(select a.Date fecha,TC.id_caso from ( select date((CAST(DATE_FORMAT(NOW() ,'%Y-%m-%d') as DATE)) - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY) as Date from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c) a left JOIN tbl_casos TC ON date(TC.fecha_contagio)=a.Date WHERE a.Date between CAST(DATE_FORMAT(DATE_SUB(NOW(), interval 1 month) ,'%Y-%m-01') as DATE) and (CAST(DATE_FORMAT(DATE_SUB(NOW(), interval 2 hour) ,'%Y-%m-%d') as DATE)) order by a.Date ) tab group by fecha", function (err, res) {
-        if (err) {
-            console.log("error: ", err);
+    //sql.query("select DATE_FORMAT(tab.fecha,'%d') as dia,(select count(TCT.id_caso) from tbl_casos TCT where date(TCT.fecha_contagio)<=tab.fecha) as num_casos_acum from(select a.Date fecha,TC.id_caso from ( select date((CAST(DATE_FORMAT(NOW() ,'%Y-%m-%d') as DATE)) - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY) as Date from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c) a left JOIN tbl_casos TC ON date(TC.fecha_contagio)=a.Date WHERE a.Date between CAST(DATE_FORMAT(DATE_SUB(NOW(), interval 1 month) ,'%Y-%m-01') as DATE) and (CAST(DATE_FORMAT(DATE_SUB(NOW(), interval 2 hour) ,'%Y-%m-%d') as DATE)) order by a.Date ) tab group by fecha", function (err, res) {
+        sql.query(`
+        (SELECT 
+            CASE 
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 1 THEN "Enero"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 2 THEN "Febrero"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 3 THEN "Marzo"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 4 THEN "Abril"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 5 THEN "Mayo"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 6 THEN "Junio"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 7 THEN "Julio"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 8 THEN "Agosto"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 9 THEN "Septiembre"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 10 THEN "Octubre"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 11 THEN "Noviembre"
+                WHEN DATE_FORMAT(c.fecha_contagio,'%m') = 12 THEN "Diciembre"
+            END as dia, (select count(TCT.id_caso) 
+                from tbl_casos TCT 
+                where date(TCT.fecha_contagio)<=LAST_DAY(DATE_SUB(c.fecha_contagio,INTERVAL 0 MONTH)) ) as num_casos_acum
+            FROM tbl_casos as c
+            WHERE c.fecha_contagio < SUBDATE(CURDATE(), DAYOFMONTH(CURDATE()) - 1)
+            GROUP BY MONTH(c.fecha_contagio)
+            ORDER BY c.fecha_contagio ASC)
+            UNION ALL
+            (SELECT DATE_FORMAT(Calendar,'%d-%m') as dia, (select count(TCT.fecha_contagio) 
+                from tbl_casos TCT 
+                where date(TCT.fecha_contagio)<=Calendar) as num_casos_acum  FROM 
+            (
+                SELECT @tmpdate := DATE_ADD(@tmpdate, INTERVAL 1 DAY) Calendar
+                   FROM 
+                   (SELECT @tmpdate := LAST_DAY(DATE_SUB(CURDATE(),INTERVAL 1 MONTH))) AS dinamico, tbl_casos
+            ) AS Calendar
+            LEFT JOIN tbl_casos caso 
+            ON DATE(caso.fecha_contagio) = Calendar
+            WHERE Calendar BETWEEN LAST_DAY(DATE_SUB(CURDATE(),INTERVAL 1 MONTH)) AND NOW()
+            GROUP BY Calendar)
+        `, function (err, res) {
+      
+    if (err) {
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
@@ -124,10 +227,10 @@ Municipios.getCasesInfo = function (result) {
             order by TC.id_caso DESC
     `, function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
@@ -137,10 +240,10 @@ Municipios.getCasesInfo = function (result) {
 Municipios.getAllDepartaments = function (result) {
     sql.query("select id_departamento as id, nombre_departamento as department_name from tbl_departamentos", function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
@@ -149,10 +252,10 @@ Municipios.getAllDepartaments = function (result) {
 Municipios.getAllStatus = function (result) {
     sql.query("select id_estado as id,nombre_estado as status from tbl_estados_pacientes", function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
@@ -161,10 +264,10 @@ Municipios.getAllStatus = function (result) {
 Municipios.getAllGenders = function (result) {
     sql.query("select id_genero as id ,nombre_genero gender from tbl_generos", function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
@@ -199,10 +302,10 @@ Municipios.getCaseById = function (caseId, result) {
             ON TEP.id_estado=TC.id_estado WHERE TC.id_caso=?
         `, [caseId], function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
@@ -211,10 +314,10 @@ Municipios.getCaseById = function (caseId, result) {
 Municipios.getAllPeople = function (result) {
     sql.query("SELECT nombres as name, apellidos as lastname,edad as age, id_genero as id_gender FROM tbl_personas", function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result(null, err);
         } else {
-            console.log('respuesta : ', res);
+            //console.log('respuesta : ', res);
             result(null, res);
         }
     });
@@ -225,13 +328,13 @@ Municipios.createCase = function (newCase, result) {
     let ok = new ParseInsert(newCase);
     sql.query("insert into tbl_personas(nombres,apellidos,edad,id_genero) values(?,?,?,?)", [ok.names, ok.lastname, (ok.age == '' ? null : ok.age), (ok.gender == '' ? null : ok.gender)], function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result({ status: "403", message: "No se pudo ingresar el nuevo caso" }, null);
         } else {
-            console.log(res.insertId);
+            //console.log(res.insertId);
             sql.query("insert into tbl_casos(id_persona,id_estado,id_departamento,direccion_caso,descripcion_caso,fecha_contagio,fecha_recuperacion) values(?,?,?,?,?,?,?)", [res.insertId, (ok.status == '' ? null : ok.status), (ok.state == '' ? null : ok.state), ok.address, ok.description, ok.contagionDate, ok.recoveryDate], function (err, res) {
                 if (err) {
-                    console.log("error: ", err);
+                    //console.log("error: ", err);
                     result({ status: "403", message: "No se pudo ingresar el nuevo caso" }, null);
                 } else {
                     result(null, { status: "200", message: "OK" });
@@ -245,13 +348,13 @@ Municipios.updateCase = function (newCase, result) {
     let ok = new ParseInsert(newCase);
     sql.query("update tbl_personas set nombres=?, apellidos=?, edad=?, id_genero=? where id_persona=?", [ok.names, ok.lastname, (ok.age == '' ? null : ok.age), (ok.gender == '' ? null : ok.gender), ok.idPerson], function (err, res) {
         if (err) {
-            console.log("error: ", err);
+            //console.log("error: ", err);
             result({ status: "403", message: "No se pudo actualizar la informacion de la peersona" }, null);
         } else {
-            console.log(res.insertId);
+            //console.log(res.insertId);
             sql.query("update tbl_casos set id_estado=?,id_departamento=?,direccion_caso=?,descripcion_caso=?,fecha_contagio=?,fecha_recuperacion=? where id_caso=?", [(ok.status == '' ? null : ok.status), (ok.state == '' ? null : ok.state), ok.address, ok.description, ok.contagionDate, ok.recoveryDate, ok.idCase], function (err, res) {
                 if (err) {
-                    console.log("error: ", err);
+                    //console.log("error: ", err);
                     result({ status: "403", message: "No se pudo actualizar el caso" }, null);
                 } else {
                     result(null, { status: "200", message: "OK" });

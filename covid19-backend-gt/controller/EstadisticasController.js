@@ -3,36 +3,36 @@ var Muni = require('../model/municipiosModel');
 
 exports.get_stats_munis = function (req, res) {
     Muni.getStatsMuni(function (err, departament) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
-        console.log('res', departament);
+        //console.log('res', departament);
         res.send(departament);
     });
 };
 exports.get_stats_pacients = function (req, res) {
     Muni.getStatsPacients(function (err, departament) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
-        console.log('res', departament);
+        //console.log('res', departament);
         res.send(departament[0]);
     });
 };
 
 exports.get_stats_gender = function (req, res) {
     Muni.getStatsGender(function (err, departament) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
-        console.log('res', departament);
+        //console.log('res', departament);
         res.send(departament);
     });
 };
 
 exports.get_stats_month = function (req, res) {
     Muni.getStatsByMonth(function (err, statsmonth) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
         // let jsonParse = [];
@@ -45,13 +45,34 @@ exports.get_stats_month = function (req, res) {
 
 exports.get_stats_gage = function (req, res) {
     Muni.getByGenderAge(function (err, statsmonth) {
-        console.log('controller')
+        /* console.log('statsmonth')
+        console.log(statsmonth); 
         if (err)
             res.send(err);
         let jsonParse = {};
         let jsonResponse = [];
         let c = [];
-        let b =[];
+        let b =[]; */
+
+        /* let response = {
+            labels: [],
+            data: []
+        }
+        statsmonth.forEach((element, idx) => {
+            let color = element.color;
+            delete element.color;
+            let gender = element.gender;
+            delete element.gender;
+            response.labels = response.labels.length == 0 ? Object.keys(element) : response.labels;      
+            response.data.push({
+                label: gender,
+               backgroundColor: color,
+                data: Object.values(element),
+                orden: idx
+            });      
+        }); */
+
+/* 
         for (let index = 0; index < statsmonth.length; index++) {
             for (var key in statsmonth[index]) {
                 var attrName = key;
@@ -75,14 +96,14 @@ exports.get_stats_gage = function (req, res) {
             var attrName = key;
             var attrValue = jsonParse[attrName];
             jsonResponse.push(attrValue);
-        }
-        console.log(jsonResponse);
-        if(c){
-            b.unshift("Edades");
-            res.send({ data: jsonResponse, bars: b, color: c });
+        } */
+        //console.log(jsonResponse);
+        if(statsmonth){
+            //b.unshift("Edades");
+            res.send(statsmonth);
             
         }else{
-            res.send({ data: [], bars: [], color: [] })
+            res.send({ data: [], labels: [] })
         }
         
 
@@ -91,10 +112,10 @@ exports.get_stats_gage = function (req, res) {
 
 exports.get_stats_acum = function (req, res) {
     Muni.getByAcumCases(function (err, statsmonth) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
-        console.log(statsmonth);
+        //console.log(statsmonth);
         res.send(statsmonth);
 
     });
@@ -102,59 +123,59 @@ exports.get_stats_acum = function (req, res) {
 
 exports.get_cases_info = function (req, res) {
     Muni.getCasesInfo(function (err, statsmonth) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
-        console.log(statsmonth);
+        //console.log(statsmonth);
         res.send(statsmonth);
 
     });
 };
 exports.get_dep_info = function (req, res) {
     Muni.getAllDepartaments(function (err, statsmonth) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
-        console.log(statsmonth);
+        //console.log(statsmonth);
         res.send(statsmonth);
 
     });
 };
 exports.get_gender_info = function (req, res) {
     Muni.getAllGenders(function (err, statsmonth) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
-        console.log(statsmonth);
+        //console.log(statsmonth);
         res.send(statsmonth);
     });
 };
 
 exports.get_status_info = function (req, res) {
     Muni.getAllStatus(function (err, statsmonth) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
-        console.log(statsmonth);
+        //console.log(statsmonth);
         res.send(statsmonth);
     });
 };
 
 exports.get_people_info = function (req, res) {
     Muni.getAllPeople(function (err, statsmonth) {
-        console.log('controller')
+        //console.log('controller')
         if (err)
             res.send(err);
-        console.log(statsmonth);
+        //console.log(statsmonth);
         res.send(statsmonth);
     });
 };
 
 exports.create_new_case = function (req, res) {
     var cases = req.body;
-    console.log('Insert');
-    console.log(cases);
-    console.log(!cases.names,
+    //console.log('Insert');
+    //console.log(cases);
+    //console.log(!cases.names,
         !cases.lastname,
         !cases.age,
         !cases.gender,
@@ -163,7 +184,7 @@ exports.create_new_case = function (req, res) {
         !cases.address,
         !cases.description,
         !cases.contagionDate,
-        !cases.recoveryDate);
+        !cases.recoveryDate;
     // if (!cases.names ||
     //     !cases.lastname ||
     //     !cases.age ||
@@ -187,7 +208,7 @@ exports.create_new_case = function (req, res) {
 };
 
 exports.read_a_case = function (req, res) {
-    console.log(req.params);
+    //console.log(req.params);
     Muni.getCaseById(req.params.caseId, function (err, task) {
         if (err)
             res.send(err);
@@ -198,9 +219,9 @@ exports.read_a_case = function (req, res) {
 
 exports.update_a_case = function (req, res) {
     var cases = req.body;
-    console.log('Update');
-    console.log(cases);
-    console.log(!cases.names,
+    //console.log('Update');
+    //console.log(cases);
+    //console.log(!cases.names,
         !cases.lastname,
         !cases.age,
         !cases.gender,
@@ -211,7 +232,7 @@ exports.update_a_case = function (req, res) {
         !cases.contagionDate,
         !cases.recoveryDate,
         !cases.idPerson,
-        !cases.idCase);
+        !cases.idCase;
     Muni.updateCase(cases, function (err, user) {
         if (err) {
             res.send(err);

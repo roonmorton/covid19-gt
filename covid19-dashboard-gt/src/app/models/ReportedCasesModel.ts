@@ -1,4 +1,4 @@
-import { MyChart } from './ChartModel'; 
+import { GoogleChartModel } from './GoogleChartModel'; 
 
 export interface ReportedCases {
     totalcases: number;
@@ -11,10 +11,10 @@ export interface ReportedCases {
 export class ReportedCasesChart {
     reportedCases: ReportedCases;
 
-    totalcases: MyChart;
-    deceased: MyChart;
-    recovered: MyChart;
-    activeCases: MyChart; 
+    totalcases: GoogleChartModel;
+    deceased: GoogleChartModel;
+    recovered: GoogleChartModel;
+    activeCases: GoogleChartModel; 
 
     constructor(reportedCases: ReportedCases) {
         this.reportedCases = reportedCases; 
@@ -27,7 +27,7 @@ export class ReportedCasesChart {
         let data: Array<any> = new Array<any>();
         data.push(['Recuperados', (this.reportedCases.recovered * 100) / this.reportedCases.totalcases]);
         data.push(['Espera', (this.reportedCases.totalcases - this.reportedCases.recovered) * 100 / this.reportedCases.totalcases]);
-        this.recovered = new MyChart('PieChart', data, [],
+        this.recovered = new GoogleChartModel('PieChart', data, [],
             {
                 legend: 'none',
                 pieSliceText: 'none',
@@ -42,7 +42,7 @@ export class ReportedCasesChart {
         data = new Array<any>();
         data.push(['Fallecidos', (this.reportedCases.deceased * 100) / this.reportedCases.totalcases]);
         data.push(['Espera', (this.reportedCases.totalcases - this.reportedCases.deceased) * 100 / this.reportedCases.totalcases]);
-        this.deceased = new MyChart('PieChart', data, [], {
+        this.deceased = new GoogleChartModel('PieChart', data, [], {
             legend: 'none',
             pieSliceText: 'none',
             pieStartAngle: 40,
@@ -57,7 +57,7 @@ export class ReportedCasesChart {
         data = new Array<any>();
         data.push(['Activos', ((this.reportedCases.deceased + this.reportedCases.recovered) * 100) / this.reportedCases.totalcases]);
         data.push(['Espera', (this.reportedCases.totalcases - (this.reportedCases.deceased + this.reportedCases.recovered)) * 100 / this.reportedCases.totalcases]);
-        this.activeCases = new MyChart('PieChart', data, [], {
+        this.activeCases = new GoogleChartModel('PieChart', data, [], {
             legend: 'none',
             pieSliceText: 'none',
             pieStartAngle: 40,
@@ -71,7 +71,7 @@ export class ReportedCasesChart {
         data = new Array<any>();
         data.push(['Fallecidos', (this.reportedCases.totalcases * 100) / this.reportedCases.totalcases]);
         data.push(['Espera', (this.reportedCases.totalcases - this.reportedCases.totalcases) * 100 / this.reportedCases.totalcases]);
-        this.totalcases = new MyChart('PieChart', data, [], {
+        this.totalcases = new GoogleChartModel('PieChart', data, [], {
             legend: 'none',
             pieSliceText: 'none',
             pieStartAngle: 40,

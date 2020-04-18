@@ -29,9 +29,9 @@ pre {
   font-size: 1em;
 }
 
-a {
+/* a {
   background-color: transparent;
-}
+} */
 
 abbr[title] {
   border-bottom: none;
@@ -247,7 +247,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0;
 }
 
-a {
+/* a {
   cursor: pointer;
   color: #333;
   text-decoration: none;
@@ -255,11 +255,11 @@ a {
 a:hover, a:focus, a:active {
   color: #0d0d0d;
   text-decoration: underline;
-}
-p a {
+} */
+/* p a {
   text-decoration: underline;
   display: inline;
-}
+} */
 
 svg {
   display: block;

@@ -89,4 +89,9 @@ export class ReportCasesComponent implements OnInit {
     this.router.navigate(['new-case', frmCase.id || '']);
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
 }

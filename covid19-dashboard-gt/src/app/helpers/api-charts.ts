@@ -17,7 +17,7 @@ export class ApiCharts{
         return environment.apiUrl + '/covid19dash/monthstats';
     }
 
-    public getAgeCases(): string{
+    public getCasesByAge(): string{
         return environment.apiUrl + '/covid19dash/genderagestats';
     }
 

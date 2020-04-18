@@ -1,0 +1,24 @@
+<section class="mat-typography" style="padding: 3.5em 0;">
+    <div class="frow-container">
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1">
+                <h2 class="mat-h2">Casos confirmados por departamento</h2>
+                <mat-card class="mat-elevation-z8">
+                    <div *ngIf="loading == 0">
+                        <mat-progress-bar mode="query"></mat-progress-bar>
+                    </div>
+                    <div *ngIf="loading == 1 && geoChart" class=" content"
+                        style="text-align: center;">
+                        <google-chart [dynamicResize]="true" style="width: 100%;" #chartGeo [title]="geoChart.title"
+                            [type]="geoChart.type" [data]="geoChart.data" [columnNames]="geoChart.columnNames"
+                            [options]="geoChart.options">
+                        </google-chart>
+                    </div>
+                    <div *ngIf="loading == 2">
+                        <p>No data...</p>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</section>

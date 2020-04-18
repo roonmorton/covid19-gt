@@ -1,0 +1,32 @@
+
+<section class="mat-typography section">
+    <div class="frow-container">
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1">
+                <h2 class="mat-h2">Casos segun edad y genero</h2>
+                <mat-card class="mat-elevation-z8" style="padding: 24px 5px;">
+                    <!-- <mat-card-header class="bg-red-light">
+                        <mat-card-title class="text-white">Confirmados (acumulados)</mat-card-title>
+                    </mat-card-header> -->
+                    <mat-card-content>
+                        <div style="padding: 1.5em;" *ngIf="loading == 0">
+                            <mat-progress-bar mode="query"></mat-progress-bar>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartAgeCases" width="100%" height="325"></canvas>
+                        </div>
+                        <!-- <div *ngIf="loading == 1 && ageCases" class="content"
+                            style="text-align: center;">
+                            <google-chart style=" width: 100%;" [type]="ageCases.type" [data]="ageCases.data"
+                                [columnNames]="ageCases.columnNames" [options]="ageCases.options">
+                            </google-chart>
+                        </div> -->
+                        <div *ngIf="loading == 2">
+                            <p>No data</p>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</section>

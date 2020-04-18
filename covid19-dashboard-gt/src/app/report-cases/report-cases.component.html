@@ -1,23 +1,27 @@
 <mat-toolbar class="mat-elevation-z5">
-    <div class="section">
+    <div class="section mat-typography">
         <div class="frow-container">
             <div class="frow row-end">
                 <div class="col-sm-1-1 " style="text-align: right; padding: 1em;">
                     <ul class="breadcrumb">
                         <li class="active">
-                            <a routerLink="/" target="_blank">
+                            <p>
+                                <a routerLink="/" target="_blank">
+                                    <span>
+                                        <mat-icon style="font-size: 1.1em;">dashboard</mat-icon>
+                                    </span>
+                                </a>
                                 <span>
-                                    <mat-icon>dashboard</mat-icon>
+                                    <mat-icon style="font-size: 1.1em;">keyboard_arrow_right</mat-icon>
                                 </span>
-                                <span>
-                                    <mat-icon>keyboard_arrow_right</mat-icon>
-                                </span>
-                            </a>
+                            </p>
                         </li>
-                        <li class="active">
-                            <a routerLink="/report-cases">
-                                Casos reportados
-                            </a>
+                        <li>
+                            <p >
+                                <a routerLink="/report-cases">
+                                    Casos reportados
+                                </a>
+                            </p>
                         </li>
                     </ul>
                 </div>
@@ -28,61 +32,111 @@
 
 <div class="section">
     <div class="frow-container">
-        <div style="text-align: center; align-items: center; ">
-            <h1 class="title text-blue" style="margin-bottom: 1px; font-size:xx-large;">Casos reportados</h1>
-            <div style="width: 50%; display: block; margin: 0 auto;">
-                <hr style="margin-top: 5px;">
+        <div class="frow">
+            <div class="col-xs-1-2 col-sm-1-2 col-md-1-2 col-lg-1-2">
+            <h2 class="mat-h2" style="margin-bottom: 10px;">Reporte de casos</h2>
+            </div>
+            <div class="col-xs-1-2 col-sm-1-2 col-md-1-2 col-lg-1-2" style="text-align: right;">
+                <a mat-raised-button class="black-buttom" routerLink="/new-case">Nuevo caso</a>
             </div>
         </div>
-        <div class="frow row-end">
-            <div class="col-sm-1-1 " style="text-align: right; padding: 1em;">
-                <a mat-raised-button color="primary" routerLink="/new-case">Nuevo caso</a>
-            </div>
-        </div>
+        <mat-divider></mat-divider>
+
+        
+        
         <mat-progress-bar *ngIf="this.dataSource.data.length <= 0 && loader" mode="indeterminate"></mat-progress-bar>
-        <div [ngStyle]="{'display': (this.dataSource.data.length > 0) ? 'block': 'none'}">
-            <table style="width: 100%;" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-                <ng-container matColumnDef="name">
+        <div [ngStyle]="{'display': (this.dataSource.data.length > 0) ? 'block': 'none'}" style="margin-top: 1em;">
+            <div>
+                <mat-form-field appearance="outline" style="width: 50%;  " [style.fontSize.px]="11" >
+                    <mat-label>Buscar</mat-label>
+                    <input matInput #search (keyup)="applyFilter($event)" placeholder="">
+                    <!-- <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''">
+                        <mat-icon>close</mat-icon>
+                      </button> -->
+                  </mat-form-field>
+            </div>
+
+            <mat-table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+                <!-- <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombres</th>
                     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container> -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nombres </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="nombres"> {{row.name}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="gender">
+                <!-- <ng-container matColumnDef="gender">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Genero </th>
                     <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+                </ng-container> -->
+                <ng-container matColumnDef="gender">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Genero </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="genero"> {{row.gender}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="age">
+                <!-- <ng-container matColumnDef="age">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Edad </th>
                     <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+                </ng-container> -->
+                <ng-container matColumnDef="age">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Edad </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="edad"> {{row.age}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="status">
+                <!-- <ng-container matColumnDef="status">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
                     <td mat-cell *matCellDef="let element">
                         {{element.status}}
                     </td>
+                </ng-container> -->
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Estado </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="estado"> {{row.status}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="department_name">
+                <!-- <ng-container matColumnDef="department_name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Departamento </th>
                     <td mat-cell *matCellDef="let element"> {{element.department_name}} </td>
+                </ng-container> -->
+                <ng-container matColumnDef="department_name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Departamento </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="Departamento"> {{row.department_name}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="fecha_contagio">
+                <!-- <ng-container matColumnDef="fecha_contagio">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Contagio </th>
                     <td mat-cell *matCellDef="let element"> {{element.contagion_date}} </td>
+                </ng-container> -->
+                <ng-container matColumnDef="fecha_contagio">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Contagio </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="contagio"> {{row.contagion_date}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="recovery_date">
+                <!--  <ng-container matColumnDef="recovery_date">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Recuperación </th>
                     <td mat-cell *matCellDef="let element"> {{element.recovery_date }} </td>
+                </ng-container> -->
+                <ng-container matColumnDef="recovery_date">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> Recuperación </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="Recuperación"> {{row.recovery_date}} </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="action">
+                <!-- <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef> </th>
                     <td mat-cell *matCellDef="let element">
                         <a mat-icon-button aria-label="Editar caso" [routerLink]="['/new-case', element.id_case]">
                             <mat-icon>edit</mat-icon>
                         </a>
                     </td>
+                </ng-container> -->
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="">
+                        <a mat-icon-button aria-label="Editar caso" [routerLink]="['/new-case', row.id_case]">
+                            <mat-icon>edit</mat-icon>
+                        </a>
+                    </mat-cell>
                 </ng-container>
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
+                <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;">
+                </mat-row>
+            </mat-table>
             <mat-paginator [ngStyle]="{'display': (this.dataSource.data.length > 0) ? 'block': 'none'}"
                 [pageSizeOptions]="[8, 16, 24]" showFirstLastButtons></mat-paginator>
 

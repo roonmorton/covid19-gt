@@ -1,6 +1,6 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'side' :  'over'">
+  <!-- <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Notificaciones</mat-toolbar>
     <mat-divider></mat-divider>
     <mat-nav-list>
@@ -8,19 +8,23 @@
       <a mat-list-item href="#">Link 2</a>
       <a mat-list-item href="#">Link 3</a>
     </mat-nav-list>
-  </mat-sidenav>
+  </mat-sidenav> -->
   <mat-sidenav-content style="height: 100%;">
-    <mat-toolbar class="bg-blue-dark mat-elevation-z8">
-      <!-- <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()">
-          <mat-icon aria-label="Side nav toggle icon" class="text-white">notifications_active</mat-icon>
-        </button> -->
-      <h2 class="text-white">Covid19 GT</h2>
+    <mat-toolbar class="bg-white mat-elevation-z8">
+      <div class="frow-container">
+        <div class="frow">
+          <div class="col-xs-1-2 col-sm-1-2 col-md-1-2">
+            <!-- <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+              <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            </button> -->
+          </div>
+          <div class="col-xs-1-2 col-sm-1-2 col-md-1-2" style="text-align: right;">
+            <img src="../assets/img/logo.png" width="52" height="34" alt="" style="vertical-align: middle;">
+          </div>
+        </div>
+      </div>
     </mat-toolbar>
-    
+
     <!-- Add Content Here -->
     <router-outlet></router-outlet>
   </mat-sidenav-content>

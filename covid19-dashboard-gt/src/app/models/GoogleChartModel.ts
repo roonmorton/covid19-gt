@@ -1,4 +1,4 @@
-export class MyChart{
+export class GoogleChartModel{
     title: string;
     type: string;
     data: Array<Array<any>>;

@@ -32,6 +32,12 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatChipsModule} from '@angular/material/chips';
+import { AccumulatedCasesComponent } from './charts/accumulated-cases/accumulated-cases.component';
+import { AccumulatedCasesPerDayComponent } from './charts/accumulated-cases-per-day/accumulated-cases-per-day.component';
+import { CasesByAgeComponent } from './charts/cases-by-age/cases-by-age.component';
+import { CasesByGenderComponent } from './charts/cases-by-gender/cases-by-gender.component';
+import { CasesByLocationComponent } from './charts/cases-by-location/cases-by-location.component';
+import { SummaryOfCasesComponent } from './charts/summary-of-cases/summary-of-cases.component';
 
 
 @NgModule({
@@ -40,7 +46,13 @@ import {MatChipsModule} from '@angular/material/chips';
     HomeComponent,
     NavComponent,
     ReportCasesComponent,
-    NewCaseComponent
+    NewCaseComponent,
+    AccumulatedCasesComponent,
+    AccumulatedCasesPerDayComponent,
+    CasesByAgeComponent,
+    CasesByGenderComponent,
+    CasesByLocationComponent,
+    SummaryOfCasesComponent
   ],
   imports: [
     BrowserModule,

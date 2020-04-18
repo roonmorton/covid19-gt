@@ -1,0 +1,67 @@
+<section class="mat-typography section">
+    <div class="frow-container">
+        <div class="frow">
+            <div class="col-xs-1-1 col-sm-1-1 col-md-1-1 col-lg-1-1">
+                <h2 class="mat-h2">Resumen de casos</h2>
+
+                <div class="frow">
+                    <div class="col-xs-1-4 col-sm-1-4 col-md-1-4 col-lg-1-4">
+                        <div style="margin: 0 6px; text-align: center; padding:8px 0;" class="mat-elevation-z6">
+                         <img src="../../../assets/img/icon/virus-infected.png" alt="infected-icon" width="42" height="42">
+                         
+                         <h1 class="data-number text-red-dark" >
+                             {{ data.totalcases }}
+                         </h1>
+                         <p style="font-size: 14px; margin: 0!important;">Infectados</p>
+                        </div>
+                     </div>
+                    <div class="col-xs-1-4 col-sm-1-4 col-md-1-4 col-lg-1-4">
+                        <div style="margin: 0 6px; text-align: center; padding:8px 0;" class="mat-elevation-z6">
+                         <img src="../../../assets/img/icon/virus-active.png" alt="infected-icon" width="42" height="42">
+                         
+                         <h1 class="data-number text-red-light" >
+                             {{ (data.totalcases - ( data.deceased + data.recovered)) }}
+                         </h1>
+                         <p style="font-size: 14px; margin: 0!important;">Activos</p>
+                        </div>
+                     </div>
+                    <div class="col-xs-1-4 col-sm-1-4 col-md-1-4 col-lg-1-4">
+                        <div style="margin: 0 6px; text-align: center; padding:8px 0;" class="mat-elevation-z6">
+                         <img src="../../../assets/img/icon/virus-death.png" alt="infected-icon" width="42" height="42">
+                         
+                         <h1 class="data-number" >
+                             {{ data.deceased  }}
+                         </h1>
+                         <p style="font-size: 14px; margin: 0!important;">Fallecidos</p>
+                        </div>
+                     </div>
+                    <div class="col-xs-1-4 col-sm-1-4 col-md-1-4 col-lg-1-4">
+                       <div style="margin: 0 6px; text-align: center; padding:8px 0;" class="mat-elevation-z6">
+                        <img src="../../../assets/img/icon/virus-recovery.png" alt="infected-icon" width="42" height="42">
+                        
+                        <h1 class="data-number text-green">
+                            {{ data.recovered }}
+                        </h1>
+                        <p style="font-size: 14px; margin: 0!important;">Recuperados</p>
+                       </div>
+                    </div>
+                </div>
+
+                <!-- <mat-card class="mat-elevation-z8" style="padding: 24px 5px;">
+                    <mat-card-content>
+                        <div style="padding: 1.5em;" *ngIf="this.loading == 0">
+                            <mat-progress-bar mode="query"></mat-progress-bar>
+                        </div>
+
+                        <div class="chart-container">
+                            <canvas id="chartSummaryCases" width="100%" height="325"></canvas>
+                        </div>
+                        <div *ngIf="this.loading == 2 " style="text-align: center;">
+                            <p>No data</p>
+                        </div>
+                    </mat-card-content>
+                </mat-card> -->
+            </div>
+        </div>
+    </div>
+</section>

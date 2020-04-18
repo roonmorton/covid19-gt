@@ -35,8 +35,8 @@ export class DataChartService {
     return this.http.get<any>(this.api.getAccumulatedCases());
   }
   
-  getAgeCases(): Observable<any>{
-    return this.http.get<any>(this.api.getAgeCases());
+  getCasesByAge(): Observable<any>{
+    return this.http.get<any>(this.api.getCasesByAge());
   }
 
   getCases(): Observable<any>{

@@ -29,7 +29,7 @@ export class SummaryOfCasesComponent implements OnInit {
     this.dataChartsService.getReportCases().subscribe(response => {
       if (response != null) {
         if (response instanceof Object) {
-          console.log(response);
+         // console.log(response);
           this.data = response;
           /* new ChartJS({
             canvas: 'chartSummaryCases',

@@ -22,6 +22,7 @@ export class CasesByLocationComponent implements OnInit {
           if (response.length > 0) {
             let arr = [];
             //console.log(response);
+            let maxValue: number = 0; 
             if (response.length > 0) {
               response.forEach(element => {
                 let total = element.total;
@@ -31,6 +32,7 @@ export class CasesByLocationComponent implements OnInit {
                 element.total_departaments = total_departaments;
                 element.total = total;
                 arr.push(Object.values(element));
+                maxValue = total;
               });
             }
             //console.log(arr);
@@ -41,8 +43,8 @@ export class CasesByLocationComponent implements OnInit {
              /*  displayMode: 'text', */
               enableRegionInteractivity: true,
               /* colorAxis: {colors: ['#e7711c', '#4374e0']}, */
-              colorAxis: {minValue: 0, maxValue:153, colors: ['e8b584', '#e6ab0f',
-              '#f4a386', '#ea460c']}
+              colorAxis: {minValue: 0, maxValue:maxValue, colors: ['#82bef8',
+              '#4ba3f8', '#0481fa']}
             })
             this.loading = 1;
           } else

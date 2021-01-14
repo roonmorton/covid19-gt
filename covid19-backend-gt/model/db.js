@@ -13,7 +13,9 @@ var dbconfig = {
 
 
 const connection = mysql.createPool(dbconfig);
-connection.on('connection', (connection) => console.log(`New connection stablished with server on thread #${connection.threadId}`))
+connection.on('connection', (connection) => {}
+//console.log(`New connection stablished with server on thread #${connection.threadId}`)
+)
 
 // ... later
 //pool.query('select 1 + 1', (err, rows) => { /* */ });
